@@ -7,5 +7,5 @@ canvas {
     width: 6;
     height: 100%; */
     border: 1px solid black;
-
+    cursor: none;
 }

@@ -3,11 +3,23 @@
   <head>
     <meta charset="utf-8">
     <title>Login Page</title>
+    <link rel="stylesheet" href="/css/login.css">
   </head>
   <body>
+    <audio autoplay loop controls>
+      <source src="audio/CreepyMusic.mp3" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+
     <form class="login" action="/login" method="post">
-      <input type="text" name="username" value="">
+      <h3>Enter Officer Name</h3>
+      <input type="text" name="username" value="" required="required">
       <button type="submit" name="submit_button">Submit</button>
     </form>
+
+    <div>
+      <h1>DERELICT</h1>
+      <img src="img/TheWatcher.png" alt="The SS Watcher">
+    </div>
   </body>
 </html>

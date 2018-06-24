@@ -1,0 +1,21 @@
+body{
+  background-image: url("../img/Space.png");
+  background-position: center;
+}
+
+h1{
+  color: Red;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+}
+
+h3{
+  color: white;
+}
+
+div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

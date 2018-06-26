@@ -10,7 +10,6 @@ module.exports = class Camera{
   constructor(anchor){
     this.location = {x:0, y:0};
     this.anchorTo(anchor);
-    this.dimensions = {h:canvas.height, w:canvas.width};
     this.centerToAnchor();
   }
 
@@ -22,6 +21,7 @@ module.exports = class Camera{
 
   centerToAnchor(){
     //our location is equal to his center location minus half our size
+    this.dimensions = {h:canvas.height, w:canvas.width};
     this.location.x = this.anchor.center.x-this.dimensions.w/2;
     this.location.y = this.anchor.center.y-this.dimensions.h/2;
     this.anchorTo(this.anchor);
@@ -48,6 +48,7 @@ module.exports = class Camera{
   }
 
   drawObjWithSprite(o){
+    if(!o.sprite){console.log("Object does not contain sprite");return;}
     if(o.orientation)
       this.drawSpriteDirectional(o.sprite, o.location.x, o.location.y, o.orientation);
     else

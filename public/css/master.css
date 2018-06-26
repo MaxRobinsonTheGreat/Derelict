@@ -3,9 +3,17 @@ canvas {
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
-    display: block;
-    width: 6;
-    height: 100%; */
+    display: block; */
+
+    margin: 0;
+    padding: 0;
+    /* width: 500px;
+    height: 500px; */
     border: 1px solid black;
     cursor: none;
+}
+
+html, body, div{
+    margin: 0;
+    padding: 0;
 }

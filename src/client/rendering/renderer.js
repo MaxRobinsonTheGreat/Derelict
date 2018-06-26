@@ -7,6 +7,26 @@ const ImageContainer = require('./image_container').getImageContainer();
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
 
+///this stuff is temporary. The fullscreen should happen before the game is started
+//it can only go fullscreen when you press
+// addEventListener("click", function() {
+//   var el = canvas,
+//     rfs = el.requestFullscreen
+//       || el.webkitRequestFullScreen
+//       || el.mozRequestFullScreen
+//       || el.msRequestFullscreen
+//   ;
+//
+//   rfs.call(el);
+//
+//   canvas.width = window.innerWidth;
+//   // console.log("resize "+document.body.clientHeight);
+//   canvas.height = window.innerHeight;
+//
+//   renderer.camera.centerToAnchor();
+// });
+//^^this makes it go full screen on click
+
 // set to true if you want to see the most recent server's version of the main players box
 var draw_self_debugger = false;
 
@@ -37,10 +57,12 @@ var renderer = module.exports = {
   },
 
   render: function(){
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // console.log(window.innerHeight);
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    this.camera.drawCollision(platform, "blue");
     this.camera.updateLocation();
+    this.camera.drawCollision(platform, "blue");
 
   	// this.drawBox(this.main_player, "blue");
     // this.main_player.sprite.drawDirectional(this.main_player.location.x, this.main_player.location.y, this.main_player.orientation);

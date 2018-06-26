@@ -98,7 +98,6 @@ module.exports = class {
 	}
 
 	drawDirectional(x, y, theta){
-
 		if(theta >= 315 || theta <= 45)
 			this.setRow(2); //right
 		else if(theta > 45 && theta <= 135)
@@ -112,12 +111,14 @@ module.exports = class {
 
 	draw(x, y){
 		if(!this.img.complete) return;
-
+		
 		this.updateFrame();
+		try{
 		ctx.drawImage(this.img,this.srcX,this.srcY,
 		this.frame_width,this.frame_height,
 		x+this.off_set_x,y+this.off_set_y,
 		this.width,this.height);
+	}catch(e){console.log(e)}
 	}
 
 	drawStatic(x, y, r, c){

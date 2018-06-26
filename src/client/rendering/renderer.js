@@ -1,13 +1,11 @@
 'use strict'
 
 const Sprite = require('./sprite');
+const Camera = require('./camera');
 const ImageContainer = require('./image_container').getImageContainer();
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
-
-var mouse_x = 0;
-var mouse_y = 0;
 
 // set to true if you want to see the most recent server's version of the main players box
 var draw_self_debugger = false;
@@ -19,6 +17,7 @@ var renderer = module.exports = {
       player.setSprite(new Sprite("Alien", player.dimensions, 2));
 
       this.main_player = player;
+      this.camera = new Camera(player);
   },
 
   setOthers: function(others, self_index){
@@ -40,33 +39,36 @@ var renderer = module.exports = {
   render: function(){
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  	this.drawBox(this.main_player, "blue");
-    this.main_player.sprite.drawDirectional(this.main_player.location.x, this.main_player.location.y, this.main_player.orientation);
+    this.camera.drawCollision(platform, "blue");
+    this.camera.updateLocation();
+
+  	// this.drawBox(this.main_player, "blue");
+    // this.main_player.sprite.drawDirectional(this.main_player.location.x, this.main_player.location.y, this.main_player.orientation);
+    this.camera.drawObjWithSprite(this.main_player);
+
 
     for(var i in this.others){
       if (i != this.self_index || draw_self_debugger && i < this.others.length){
-         this.drawBox(this.others[i], "red");
-         this.others[i].sprite.draw(this.others[i].location.x, this.others[i].location.y);
+         // this.drawBox(this.others[i], "red");
+         // this.others[i].sprite.draw(this.others[i].location.x, this.others[i].location.y);
+
+         this.camera.drawObjWithSprite(this.others[i]);
       }
     }
-    ctx.beginPath();
-    ctx.moveTo(this.main_player.center.x, this.main_player.center.y);
-    ctx.lineTo(mouse_x, mouse_y);
-    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.moveTo(this.main_player.center.x, this.main_player.center.y);
+    // ctx.lineTo(mouse_x, mouse_y);
+    // ctx.stroke();
 
-    this.main_player.setOrientation(mouse_x, mouse_y);
-  },
+    let mouse_loc = this.camera.getMouseLocation();
 
-  drawBox: function(box, color){
-    ctx.fillStyle = color;
-    ctx.fillRect(box.location.x, box.location.y,
-                 box.dimensions.w, box.dimensions.h);
+    this.camera.drawLine(this.main_player.center.x, this.main_player.center.y, mouse_loc.x, mouse_loc.y);
+
+    this.main_player.setOrientation(mouse_loc);
+
   }
-
 }
 
-$("body").mousemove(function(e) {
-  var rect = canvas.getBoundingClientRect();
-  mouse_x = e.clientX - rect.left;
-  mouse_y = e.clientY - rect.top;
-});
+var platform = {};
+platform.location = {x:0, y:0};
+platform.dimensions = {h:400,w:600};

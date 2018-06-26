@@ -30,8 +30,11 @@ module.exports = class {
     return(old_loc);
   }
 
-  setOrientation(mouse_x, mouse_y){
+  setOrientation(mouse_location){
     this.center = this.getCenter();
+
+    let mouse_x = mouse_location.x;
+    let mouse_y = mouse_location.y;
 
     let adjacent = mouse_x - this.center.x;
     let opposite = mouse_y - this.center.y;

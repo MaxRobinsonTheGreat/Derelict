@@ -1,7 +1,7 @@
 module.exports = class {
   constructor() {
     this.location = {x:20, y:20};
-    this.dimensions = {h:100, w:50};
+    this.dimensions = {h:40, w:40};
     this.center = this.getCenter();
     this.commands = {left: false, right: false, up: false, down: false};
     this.speed = 100; //pixels per second

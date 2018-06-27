@@ -133,7 +133,7 @@ function setState(state){
       others.push(new Entity(
         "Officer",
          state.locations[i],
-         game_core.getDimensionsObj(100, 50))
+         game_core.getDimensionsObj(40, 40))
        );
     }
   }

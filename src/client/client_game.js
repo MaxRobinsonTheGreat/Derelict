@@ -132,7 +132,7 @@ function setState(state){
   else if(others.length < state.locations.length){
     for(var i=others.length; i<state.locations.length; i++){
       others.push(new Entity(
-        "Person",
+        "Officer",
          state.locations[i],
          game_core.getDimensionsObj(100, 50))
        );

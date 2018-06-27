@@ -3,10 +3,11 @@
 const Sprite = require('./rendering/sprite');
 
 module.exports = class Entity{
-  constructor(type, location, dimensions){
+  constructor(type, location, dimensions, orientation){
     this.type = type;
     this.location = location;
     this.dimensions = dimensions;
+    this.orientation = orientation;
 
     this.sprite = new Sprite(type, dimensions, 2);
   }

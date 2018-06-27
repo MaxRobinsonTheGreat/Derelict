@@ -51,14 +51,16 @@ module.exports = class Game{
   updateClients(){
     // update all clients with the info relevant to them about the world and the other clients
     var locations = [];
+    var orientations = [];
     this.clients.forEach(function getLocations(client, name, map){
       locations.push(client.player.location);
+      orientations.push(client.player.orientation);
     });
 
     //why isn't this in the getLocations function?
     var self_index = 0;
     this.clients.forEach(function update(client, name, map){
-      client.sendToAll({locations, self_index: self_index++});
+      client.sendToAll({locations, orientations, self_index: self_index++});
     });
   }
 
@@ -112,6 +114,7 @@ module.exports = class Game{
     }
     else{
       client.player.location = predicted_location;
+      client.player.orientation = pack.ori;
     }
   }
 }

@@ -73,7 +73,6 @@ io.on('connection', function(new_client) {
     username = init_username;
     Logger.log('Client ' + username + ' connected.');
 
-
     if(clients.size <= 1 && !game.isRunning()) {
       try{
         game.start();

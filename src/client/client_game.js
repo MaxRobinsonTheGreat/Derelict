@@ -45,7 +45,6 @@ function main(){
   interval = setInterval(function(){Update();Renderer.render();}, 1000/FPS);
 
   //make sure the default position is not colliding with anything
-  console.log(localStorage.getItem("username"));
   socket.emit('init_client', main_player.location, localStorage.getItem("username"));
 }
 

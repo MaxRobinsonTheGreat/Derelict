@@ -45,7 +45,7 @@ function main(){
   interval = setInterval(function(){Update();Renderer.render();}, 1000/FPS);
 
   //make sure the default position is not colliding with anything
-  socket.emit('init_client', main_player.location);
+  socket.emit('init_client', main_player.location, localStorage.getItem("username"));
 }
 
 //        --- UPDATE ---
@@ -135,7 +135,7 @@ function setState(state){
       others.push(new Entity(
         "Officer",
          state.locations[i],
-         game_core.getDimensionsObj(100, 50))
+         game_core.getDimensionsObj(40, 40))
        );
     }
   }

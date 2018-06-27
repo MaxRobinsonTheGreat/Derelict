@@ -32,10 +32,8 @@ app.post('/', function(req, res, next) {
     //check username
     var duplicate = false;
     var iterator = clients.keys();
-    console.log(iterator);
-    console.log('Username: ' + username);
+
     for(let name of iterator) {
-      console.log('name: ' + name);
       if(username === name) {
         duplicate = true;
       }

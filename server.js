@@ -26,9 +26,10 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + '/public/html/login-page.html');
 });
-app.post('/login', function(req, res, next) {
+app.post('/', function(req, res, next) {
     let body = req.body;
     res.sendFile(__dirname + '/public/html/index.html');
+    res.send
 });
 
 // -- ClIENT LISTENERS --
@@ -40,7 +41,7 @@ io.on('connection', function(new_client) {
     /* The client counter increments with every added client, but does not decrement when a client leaves.
        It is used as a key in a map, not as an index in an array. This is temporary until we get login working*/
 
-  var client = new Client(new_client);
+  var client = new Client(new_client, );
 
   Logger.log('Client ' + cur_name + ' connected.');
 
@@ -50,8 +51,10 @@ io.on('connection', function(new_client) {
       - initializes the client and clientbodies objects and puts into maps
       - restarts physics loop when the client is added to an empty client map
   */
-  client.on('init_client', function(new_player_loc){
+  client.on('init_client', function(new_player_loc, username){
     game.addClient(client, cur_name, new_player_loc);
+
+    console.log(username);
 
     if(clients.size <= 1 && !game.isRunning()) {
       try{

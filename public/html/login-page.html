@@ -4,16 +4,23 @@
     <meta charset="utf-8">
     <title>Login Page</title>
     <link rel="stylesheet" href="/css/login.css">
+    <script type="text/javascript">
+      function saveUsername() {
+        let username = document.getElementById("username").value;
+        localStorage.setItem("username", username);
+        alert(username);
+      }
+    </script>
   </head>
   <body>
     <audio autoplay loop controls>
       <source src="audio/CreepyMusic.mp3" type="audio/mp3">
         Your browser does not support the audio element.
-      </audio>
+    </audio>
 
-    <form class="login" action="/login" method="post">
+    <form class="login" action="/" method="post" onsubmit="saveUsername()">
       <h3>Enter Officer Name</h3>
-      <input type="text" name="username" value="" required="required">
+      <input type="text" name="username" value="" required="required" id="username">
       <button type="submit" name="submit_button">Submit</button>
     </form>
 

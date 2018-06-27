@@ -8,7 +8,7 @@ module.exports = class Entity{
     this.location = location;
     this.dimensions = dimensions;
 
-    this.sprite = new Sprite(type, dimensions, .5);
+    this.sprite = new Sprite(type, dimensions, 2);
   }
 
   interpolate(startloc, endloc, d_time, delayed_time){

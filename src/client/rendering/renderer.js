@@ -34,16 +34,16 @@ var renderer = module.exports = {
 
   setMainPlayer: function(player){
       let sprite_title = player.sprite_title;
-      player.setSprite(new Sprite("Alien", player.dimensions, 2));
+      player.setSprite(new Sprite(player.sprite_title, player.dimensions, 2));
 
       this.main_player = player;
       this.camera = new Camera(player);
   },
 
   setOthers: function(others, self_index){
-    for(let o of others){
-      o.sprite = new Sprite("Person", o.dimensions, .5);
-    }
+    // for(let o of others){
+    //   o.sprite = new Sprite("Person", o.dimensions, .5);
+    // }
     this.others = others;
     this.self_index = self_index;
   },

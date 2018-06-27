@@ -49,8 +49,14 @@ module.exports = class Camera{
 
   drawObjWithSprite(o){
     if(!o.sprite){console.log("Object does not contain sprite");return;}
-    if(o.orientation)
-      this.drawSpriteDirectional(o.sprite, o.location.x, o.location.y, o.orientation);
+    if(o.orientation){
+      if(o.moving){
+        this.drawSpriteDirectional(o.sprite, o.location.x, o.location.y, o.orientation);
+      }
+      else {
+        o.sprite.drawStaticDirectional(o.location.x-this.location.x, o.location.y-this.location.y, 0, 0, o.orientation);
+      }
+    }
     else
       this.drawSprite(o.sprite, o.location.x, o.location.y);
   }

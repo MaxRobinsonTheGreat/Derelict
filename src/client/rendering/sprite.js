@@ -98,27 +98,43 @@ module.exports = class {
 	}
 
 	drawDirectional(x, y, theta){
-		if(theta >= 315 || theta <= 45)
-			this.setRow(2); //right
-		else if(theta > 45 && theta <= 135)
-			this.setRow(0); //down
-		else if(theta > 135 && theta <= 225)
-			this.setRow(1); //left
-		else
-			this.setRow(3); //up
-		this.draw(x, y);
+		//DONT DELETE THESE COMMENTS
+		// if(theta >= 315 || theta <= 45)
+		// 	this.setRow(2); //right
+		// else if(theta > 45 && theta <= 135)
+		// 	this.setRow(0); //down
+		// else if(theta > 135 && theta <= 225)
+		// 	this.setRow(1); //left
+		// else
+		// 	this.setRow(3); //up
+		//DONT DELETE THESE COMMENTS
+
+		ctx.save();
+		ctx.translate(x+this.width/2+this.off_set_x, y+this.height/2+this.off_set_y);
+		ctx.rotate(theta*Math.PI/180);
+		ctx.translate(-this.width/2-this.off_set_x, -this.height/2-this.off_set_y);
+		this.draw(0, 0);
+		ctx.restore();
+	}
+
+	drawStaticDirectional(x, y, r, c, theta){
+		ctx.save();
+		ctx.translate(x+this.width/2+this.off_set_x, y+this.height/2+this.off_set_y);
+		ctx.rotate(theta*Math.PI/180);
+		ctx.translate(-this.width/2-this.off_set_x, -this.height/2-this.off_set_y);
+		this.drawStatic(0, 0, r, c);
+		ctx.restore();
 	}
 
 	draw(x, y){
 		if(!this.img.complete) return;
-		
+
 		this.updateFrame();
-		try{
+
 		ctx.drawImage(this.img,this.srcX,this.srcY,
 		this.frame_width,this.frame_height,
 		x+this.off_set_x,y+this.off_set_y,
 		this.width,this.height);
-	}catch(e){console.log(e)}
 	}
 
 	drawStatic(x, y, r, c){

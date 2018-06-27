@@ -7,7 +7,7 @@ module.exports = class {
     this.speed = 100; //pixels per second
     this.last_update = Date.now();
     this.orientation = 0;
-    this.sprite_title = "Alien";
+    this.sprite_title = "Officer";
   }
 
   setSprite(s){
@@ -23,10 +23,11 @@ module.exports = class {
   move(time){
     var old_loc = Object.assign({}, this.location);
     var dist = (time/1000)*this.speed;
-    if(this.commands.left) this.location.x-=dist;
-    if(this.commands.right) this.location.x+=dist;
-    if(this.commands.up) this.location.y-=dist;
-    if(this.commands.down) this.location.y+=dist;
+    this.moving = false;
+    if(this.commands.left) {this.location.x-=dist;this.moving = true;}
+    if(this.commands.right) {this.location.x+=dist;this.moving = true;}
+    if(this.commands.up) {this.location.y-=dist;this.moving = true;}
+    if(this.commands.down) {this.location.y+=dist;this.moving = true;}
     return(old_loc);
   }
 

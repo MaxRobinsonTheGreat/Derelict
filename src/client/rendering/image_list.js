@@ -9,19 +9,11 @@ module.exports = [
 		fps: 5
 	},
 	{
-		title: "Person",
-		src: "character.png",
+		title: "Officer",
+		src: "Officer.png",
 		type: "sprite",
-		rows: 2,
+		rows: 1,
 		cols: 8,
-		fps: 10
-	},
-	{
-		title: "Pixels",
-		src: "movers.png",
-		type: "sprite",
-		rows: 3,
-		cols: 2,
-		fps: 4
+		fps: 12
 	}
 ]

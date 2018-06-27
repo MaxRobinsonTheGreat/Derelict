@@ -53,9 +53,6 @@ io.on('connection', function(new_client) {
   */
   client.on('init_client', function(new_player_loc, username){
     game.addClient(client, cur_name, new_player_loc);
-
-    console.log(username);
-
     if(clients.size <= 1 && !game.isRunning()) {
       try{
         game.start();

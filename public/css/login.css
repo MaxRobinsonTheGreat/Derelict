@@ -9,6 +9,12 @@ h1{
   font-family: "Lucida Console";
 }
 
+h4{
+  color: gray;
+  text-align: center;
+  font-family: "Lucida Console";
+}
+
 h3{
   color: white;
 }
@@ -18,4 +24,8 @@ div {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.gameslot{
+  color: blue;
 }

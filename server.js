@@ -27,9 +27,24 @@ app.get('/', function(req, res, next) {
     res.sendFile(__dirname + '/public/html/login-page.html');
 });
 app.post('/', function(req, res, next) {
-    let body = req.body;
-    res.sendFile(__dirname + '/public/html/index.html');
-    res.send
+    let username = req.body.username;
+
+    //check username
+    var duplicate = false;
+    var iterator = clients.keys();
+
+    for(let name of iterator) {
+      if(username === name) {
+        duplicate = true;
+      }
+    }
+
+    if(duplicate) {
+      res.sendFile(__dirname + '/public/html/login-page.html');
+    }
+    else {
+      res.sendFile(__dirname + '/public/html/index.html');
+    }
 });
 
 // -- ClIENT LISTENERS --
@@ -37,13 +52,12 @@ server.listen(4200, '0.0.0.0'); // begin listening
 Logger.log("SERVER: listening...");
 // io.set('transports', ['websocket']);
 io.on('connection', function(new_client) {
-  var cur_name = (client_counter++)+"";
+  // var cur_name = (client_counter++)+"";
     /* The client counter increments with every added client, but does not decrement when a client leaves.
        It is used as a key in a map, not as an index in an array. This is temporary until we get login working*/
+  var username;
+  var client = new Client(new_client);
 
-  var client = new Client(new_client, );
-
-  Logger.log('Client ' + cur_name + ' connected.');
 
   /* API 'init_client'
      input: {x, y}
@@ -51,8 +65,12 @@ io.on('connection', function(new_client) {
       - initializes the client and clientbodies objects and puts into maps
       - restarts physics loop when the client is added to an empty client map
   */
-  client.on('init_client', function(new_player_loc, username){
-    game.addClient(client, cur_name, new_player_loc);
+  client.on('init_client', function(new_player_loc, init_username){
+    game.addClient(client, init_username, new_player_loc);
+
+    username = init_username;
+    Logger.log('Client ' + username + ' connected.');
+
     if(clients.size <= 1 && !game.isRunning()) {
       try{
         game.start();
@@ -69,8 +87,8 @@ io.on('connection', function(new_client) {
       - sends correction data to client if prediction is wrong
   */
   client.on('move', function(pack){
-    if(!clients.has(cur_name)){return;}
-    try{game.movePlayer(cur_name, pack);}catch(e){}
+    if(!clients.has(username)){return;}
+    try{game.movePlayer(username, pack);}catch(e){}
   });
 
   /* API 'disconnect'
@@ -80,9 +98,9 @@ io.on('connection', function(new_client) {
   */
   client.on('disconnect', function(){
 
-    game.removeClient(cur_name);
+    game.removeClient(username);
 
-    Logger.log("Client " + cur_name + " disconnected.");
+    Logger.log("Client " + username + " disconnected.");
 
     if(clients.size === 0){
         game.stop();

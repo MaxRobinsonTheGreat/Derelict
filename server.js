@@ -16,7 +16,7 @@ var io = require('socket.io')(server);
 var clients = new Map(); // contains socket connections and player objects
 var client_counter=0; //increments with every added client
 
-var game = new Game("only_game", clients);//Object.assign({}, clients));
+var game = new Game("only_game", new Map());//Object.assign({}, clients));
 
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/public'));
@@ -29,20 +29,11 @@ app.get('/', function(req, res, next) {
 app.post('/', function(req, res, next) {
     let username = req.body.username;
 
-    //check username
-    var duplicate = false;
-    var iterator = clients.keys();
-
-    for(let name of iterator) {
-      if(username === name) {
-        duplicate = true;
-      }
-    }
-
-    if(duplicate) {
+    if(clients.has(username)) {
       res.sendFile(__dirname + '/public/html/login-page.html');
     }
     else {
+      clients.set(username, '');
       res.sendFile(__dirname + '/public/html/index.html');
     }
 });
@@ -66,9 +57,10 @@ io.on('connection', function(new_client) {
       - restarts physics loop when the client is added to an empty client map
   */
   client.on('init_client', function(new_player_loc, init_username){
-    game.addClient(client, init_username, new_player_loc);
+    username = init_username; //sets the client username so it can be removed
 
-    username = init_username;
+    game.addClient(client, username, new_player_loc);
+
     Logger.log('Client ' + username + ' connected.');
 
     if(clients.size <= 1 && !game.isRunning()) {
@@ -98,6 +90,7 @@ io.on('connection', function(new_client) {
   */
   client.on('disconnect', function(){
 
+    clients.delete(username); //removes from the master map. should be done when they leave the lobby
     game.removeClient(username);
 
     Logger.log("Client " + username + " disconnected.");

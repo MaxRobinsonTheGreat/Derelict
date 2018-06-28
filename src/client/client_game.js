@@ -56,6 +56,7 @@ function Update(){
 
   updateOthers();
 
+  //if(main_player.moving)
   socket.emit('move', {loc: main_player.location, ori: main_player.orientation, cc: correction_counter});
 }
 
@@ -93,7 +94,11 @@ function updateOthers(){
       let endloc = update_queue[0].state.locations[i];
       let d_time = update_queue[0].timestamp - oldest_update.timestamp;
       others[i].interpolate(startloc, endloc, d_time, delayed_time);
-      others[i].orientation = oldest_update.state.orientations[i];
+
+      //others[i].orientation = oldest_update.state.orientations[i];
+      let startori = oldest_update.state.orientations[i];
+      let endori = update_queue[0].state.orientations[i];
+      others[i].interpolateOrientation(startori, endori, d_time, delayed_time);
     }
     else{
       var index = update_queue[update_queue.length-1].state.self_index;

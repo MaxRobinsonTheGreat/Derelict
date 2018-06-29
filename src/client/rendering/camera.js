@@ -76,6 +76,10 @@ module.exports = class Camera{
     ctx.lineTo(x2-this.location.x, y2-this.location.y);
     ctx.stroke();
   }
+
+  writeText(text, x, y){
+    ctx.fillText(text, x-this.location.x, y-this.location.y)
+  }
 }
 $("body").mousemove(function(e) {
   var rect = canvas.getBoundingClientRect();

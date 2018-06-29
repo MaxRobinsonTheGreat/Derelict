@@ -64,23 +64,17 @@ var renderer = module.exports = {
     this.camera.updateLocation();
     this.camera.drawCollision(platform, "blue");
 
-  	// this.drawBox(this.main_player, "blue");
-    // this.main_player.sprite.drawDirectional(this.main_player.location.x, this.main_player.location.y, this.main_player.orientation);
     this.camera.drawObjWithSprite(this.main_player);
 
 
+    ctx.fillStyle = "white";
+    ctx.font="15px Arial";
     for(var i in this.others){
       if (i != this.self_index || draw_self_debugger && i < this.others.length){
-         // this.drawBox(this.others[i], "red");
-         // this.others[i].sprite.draw(this.others[i].location.x, this.others[i].location.y);
-
-         this.camera.drawObjWithSprite(this.others[i]);
+        this.camera.drawObjWithSprite(this.others[i]);
+        this.camera.writeText(this.others[i].name, this.others[i].location.x, this.others[i].location.y+5);
       }
     }
-    // ctx.beginPath();
-    // ctx.moveTo(this.main_player.center.x, this.main_player.center.y);
-    // ctx.lineTo(mouse_x, mouse_y);
-    // ctx.stroke();
 
     let mouse_loc = this.camera.getMouseLocation();
 

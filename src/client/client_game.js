@@ -118,7 +118,7 @@ function updateOthers(){
 function setState(state){
   //removes excess others
   if(others.length > state.locations.length){
-    others.splice(state.locations.length-1, others.length-1);
+    others.splice(state.locations.length-1, others.length-state.locations.length);
   }
   //adds extra others
   else if(others.length < state.locations.length){
@@ -130,11 +130,8 @@ function setState(state){
          state.dimensions[i],
          state.orientations[i])
        );
-      // console.log(state.names[i]);
     }
   }
-
-  console.log(state.locations.length);
 
   self_index = state.self_index;
   Renderer.setSelfIndex(state.self_index);
@@ -161,7 +158,6 @@ socket.on('all', function(state) {
     - Initializes all entities with essential data
 */
 socket.on('init_entities', function(state) {
-    console.log("Init entities");
     setState(state);
 });
 

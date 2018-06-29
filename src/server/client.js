@@ -8,6 +8,10 @@ let client = module.exports = class {
     this.connection.on(name, funct);
   }
 
+  initEntities(sending_object) {
+    this.connection.emit('init_entities', sending_object);
+  }
+
   sendToAll(sending_object) {
     this.connection.emit('all', sending_object);
   }

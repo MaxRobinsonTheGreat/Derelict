@@ -64,6 +64,27 @@ module.exports = class Game{
     });
   }
 
+  initEntities(){
+    //Sends initilization data for entities to all clients like names, dimensions, etc
+    var names = [];
+    var locations = [];
+    var orientations = [];
+    var dimensions = [];
+
+    this.clients.forEach(function getLocations(client, name, map){
+      names.push(name);
+      locations.push(client.player.location);
+      orientations.push(client.player.orientation);
+      dimensions.push(client.player.dimensions);
+    });
+
+    var self_index = 0;
+    this.clients.forEach(function update(client, name, map){
+      client.initEntities({names, locations, orientations, dimensions, self_index});
+      self_index++;
+    });
+  }
+
   addClient(client, client_name, location){
     client.player = new Player();
     client.player.correction_counter = 0;
@@ -79,10 +100,12 @@ module.exports = class Game{
 
     // put client info in map
     this.clients.set(client_name, client);
+    this.initEntities();
   }
 
   removeClient(name){
     this.clients.delete(name);
+    this.initEntities();
   }
 
   movePlayer(name, pack){

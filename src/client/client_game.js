@@ -79,9 +79,12 @@ function updatePlayerPosition() {
 function updateOthers(){
   if(oldest_update === undefined || update_queue === undefined) return;
 
-  setState(oldest_update.state);
-
   if(update_queue.length === 0) return;
+
+  if(others.length != oldest_update.state.locations.length){
+    oldest_update = update_queue.shift();
+    return;
+  }
 
   let current_time = Date.now();
   let delayed_time = current_time - update_delay - oldest_update.timestamp;
@@ -112,23 +115,6 @@ function updateOthers(){
   }
 }
 
-
-// function interpolateEntityAt(i, current_time){
-//   let startloc = oldest_update.state.locations[i];
-//   let endloc = update_queue[0].state.locations[i];
-//   let time_dif = update_queue[0].timestamp - oldest_update.timestamp;
-//
-//   // we divide by time_dif, so make sure it's not zero
-//   if(time_dif === 0) return;
-//
-//   others[i].location = startloc;
-//   others[i].location.x += ( ((endloc.x - startloc.x) / (time_dif))*
-//                  (current_time - update_delay - oldest_update.timestamp));
-//
-//   others[i].location.y += ( ((endloc.y - startloc.y) / (time_dif))*
-//                 (current_time - update_delay - oldest_update.timestamp));
-// }
-
 function setState(state){
   //removes excess others
   if(others.length > state.locations.length){
@@ -138,12 +124,17 @@ function setState(state){
   else if(others.length < state.locations.length){
     for(var i=others.length; i<state.locations.length; i++){
       others.push(new Entity(
-        "Officer",
+         state.names[i],
+         "Officer",
          state.locations[i],
-         game_core.getDimensionsObj(40, 40))
+         state.dimensions[i],
+         state.orientations[i])
        );
+      // console.log(state.names[i]);
     }
   }
+
+  console.log(state.locations.length);
 
   self_index = state.self_index;
   Renderer.setSelfIndex(state.self_index);
@@ -152,12 +143,11 @@ function setState(state){
 
 //        --- SERVER LISTENERS ---
 /* API 'all'
-   input: {locations: [{x,y},{x,y},...]}
+   input: {locations: [{x,y},{x,y},...], orientations: []}
     - pushes the new state into the update queue
 */
 socket.on('all', function(state) {
     if(oldest_update === undefined){
-      setState(state);
       oldest_update = {state, timestamp: Date.now()};
     }
     else{
@@ -165,9 +155,19 @@ socket.on('all', function(state) {
     }
 
 });
+
+/* API 'init_entities'
+   input: {names, locations: [{x,y},{x,y},...], ori}
+    - Initializes all entities with essential data
+*/
+socket.on('init_entities', function(state) {
+    console.log("Init entities");
+    setState(state);
+});
+
 /* API 'correction'
    input: {x,y}
-    - pushes the new state into the update queue
+    - Immediately updates the player location
 */
 socket.on('correction', function(pack){
   if(pack.cc !== correction_counter) return;

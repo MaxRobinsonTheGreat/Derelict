@@ -16,7 +16,7 @@ var io = require('socket.io')(server);
 var clients = new Map(); // contains socket connections and player objects
 var client_counter=0; //increments with every added client
 
-var game = new Game("only_game", new Map());//Object.assign({}, clients));
+var game = new Game("only_game", new Map());
 
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/public'));
@@ -30,9 +30,10 @@ app.post('/', function(req, res, next) {
     let username = req.body.username;
 
     if(clients.has(username)) {
-      // res.send("Username is already taken.");
+      res.sendFile(__dirname + '/public/html/login-page.html');
     }
     else {
+      Logger.log('Client ' + username + ' signed in.');
       clients.set(username, '');
       res.sendFile(__dirname + '/public/html/index.html');
     }
@@ -41,13 +42,14 @@ app.post('/', function(req, res, next) {
 // -- ClIENT LISTENERS --
 server.listen(4200, '0.0.0.0'); // begin listening
 Logger.log("SERVER: listening...");
-// io.set('transports', ['websocket']);
-io.on('connection', function(new_client) {
+io.on('connection', function(connection) {
   // var cur_name = (client_counter++)+"";
-    /* The client counter increments with every added client, but does not decrement when a client leaves.
-       It is used as a key in a map, not as an index in an array. This is temporary until we get login working*/
+
+  if(clients.size == 0){
+    connection.disconnect();
+  }
   var username;
-  var client = new Client(new_client);
+  var client = new Client(connection);
 
 
   /* API 'init_client'
@@ -59,9 +61,16 @@ io.on('connection', function(new_client) {
   client.on('init_client', function(new_player_loc, init_username){
     username = init_username; //sets the client username so it can be removed
 
+    if(!clients.has(username)){
+      Logger.log('Nonexistent client attempted game init: ' + username);
+      client.connection.emit('rejected', "log back in ya dope");
+      connection.disconnect();
+      return;
+    }
+    clients.set(username, client);
     game.addClient(client, username, new_player_loc);
 
-    Logger.log('Client ' + username + ' connected.');
+    Logger.log('Client ' + username + ' opened a game socket.');
 
     if(clients.size <= 1 && !game.isRunning()) {
       try{

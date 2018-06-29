@@ -30,7 +30,7 @@ app.post('/', function(req, res, next) {
     let username = req.body.username;
 
     if(clients.has(username)) {
-      res.sendFile(__dirname + '/public/html/login-page.html');
+      // res.send("Username is already taken.");
     }
     else {
       clients.set(username, '');

@@ -77,11 +77,11 @@ var renderer = module.exports = {
     }
 
     let mouse_loc = this.camera.getMouseLocation();
-
-    this.camera.drawLine(this.main_player.center.x, this.main_player.center.y, mouse_loc.x, mouse_loc.y);
+    // let gun_point = this.main_player.getGunpoint();
 
     this.main_player.setOrientation(mouse_loc);
 
+    this.camera.drawLineObj(this.main_player.aim);
   }
 }
 

@@ -8,8 +8,6 @@
     It's important to note that no DATA is being shared (or even could be shared) through this file, only functionality.
     The server and client(s) have their own copies of this file and cannot communicate through the core.
 */
-const Player = require('./player');
-
 module.exports = {
 
   getLocationObj: function(x, y) {

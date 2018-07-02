@@ -1,13 +1,17 @@
+const Line = require('./line');
+
 module.exports = class {
   constructor() {
     this.location = {x:20, y:20};
     this.dimensions = {h:40, w:40};
     this.center = this.getCenter();
+    this.gun_offset = {x:40, y:8}; //when facing right, these values are the relative transform away from the center to the gunpoint
     this.commands = {left: false, right: false, up: false, down: false};
     this.speed = 100; //pixels per second
     this.last_update = Date.now();
     this.orientation = 0;
     this.sprite_title = "Officer";
+    this.aim = new Line();
   }
 
   setSprite(s){
@@ -18,6 +22,28 @@ module.exports = class {
     let x = this.location.x + this.dimensions.w / 2;
     let y = this.location.y + this.dimensions.h / 2;
     return {x, y}
+  }
+
+  getGunpoint(){
+    let center = this.getCenter();
+
+    let x = this.gun_offset.x;
+    let y = this.gun_offset.y;
+
+    let rads = this.orientation*Math.PI/180;
+
+    let x_over = (Math.cos(rads) * x);
+    let x_up =  (Math.sin(rads) * x);
+
+    rads = (this.orientation+90)*Math.PI/180;
+
+    let y_over = (Math.cos(rads) * y);
+    let y_up =  (Math.sin(rads) * y);
+
+    x = x_over + y_over + center.x;
+    y = y_up + x_up + center.y;
+
+    return {x, y};
   }
 
   move(time){
@@ -59,5 +85,7 @@ module.exports = class {
       let orientation = Math.atan(opposite/adjacent) * rad2deg;
       this.orientation = orientation + 180;
     }
+    let gun_point = this.getGunpoint();
+    this.aim.makeByOrientation(gun_point.x, gun_point.y, this.orientation, 100);
   }
 }

@@ -60,8 +60,14 @@ var renderer = module.exports = {
     return ctx;
   },
 
+  changeCanvasToFull: function() {
+    changeCanvasToFull();
+    this.camera.centerToAnchor();
+  },
+
   render: function(){
     // console.log(window.innerHeight);
+    // changeCanvasToFull();
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 

@@ -202,3 +202,5 @@ function checkKeyUp(evt){
 addEventListener("click", function() {
   main_player.attack();
 });
+
+$(window).resize(function() {Renderer.changeCanvasToFull();});

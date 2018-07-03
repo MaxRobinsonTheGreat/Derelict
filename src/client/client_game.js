@@ -176,7 +176,7 @@ socket.on('correction', function(pack){
 //      --- CONTROL LISTENERS ---
 const KEY_UP=87, KEY_DOWN=83, KEY_LEFT=65, KEY_RIGHT=68;
 function checkKeyDown(evt) {
-  evt.preventDefault();
+  // evt.preventDefault();
   if (evt.keyCode === KEY_LEFT)
     main_player.commands.left = true;
   if (evt.keyCode === KEY_RIGHT)
@@ -188,7 +188,7 @@ function checkKeyDown(evt) {
 }
 
 function checkKeyUp(evt){
-  evt.preventDefault();
+  // evt.preventDefault();
   if (evt.keyCode === KEY_LEFT)
     main_player.commands.left = false;
   if (evt.keyCode === KEY_RIGHT)

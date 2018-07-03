@@ -3,9 +3,13 @@
 const Sprite = require('./sprite');
 const Camera = require('./camera');
 const ImageContainer = require('./image_container').getImageContainer();
+const changeCanvasToFull = require('./changeCanvasToFull');
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
+
+changeCanvasToFull();
+// $('window').resize(changeCanvasToFull());
 
 ///this stuff is temporary. The fullscreen should happen before the game is started
 //it can only go fullscreen when you press

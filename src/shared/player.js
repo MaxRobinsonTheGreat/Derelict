@@ -1,4 +1,5 @@
 const Line = require('./line');
+const Bullet = require('./bullet');
 
 module.exports = class {
   constructor() {
@@ -9,7 +10,7 @@ module.exports = class {
     this.commands = {left: false, right: false, up: false, down: false};
     this.speed = 100; //pixels per second
     this.last_update = Date.now();
-    this.orientation = 0;
+    this.orientation = 0; //degrees
     this.sprite_title = "Officer";
     this.aim = new Line();
   }
@@ -87,5 +88,11 @@ module.exports = class {
     }
     let gun_point = this.getGunpoint();
     this.aim.makeByOrientation(gun_point.x, gun_point.y, this.orientation, 100);
+  }
+
+  attack(){
+    this.bullet = new Bullet();
+    this.bullet.fireFrom(this);
+    this.bullet.startFade();
   }
 }

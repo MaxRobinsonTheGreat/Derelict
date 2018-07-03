@@ -67,11 +67,11 @@ module.exports = class Camera{
                    box.dimensions.w, box.dimensions.h);
   }
 
-  drawLineObj(line){
-    this.drawLine(line.start.x, line.start.y, line.end.x, line.end.y)
+  drawLineObj(line, color){
+    this.drawLine(line.start.x, line.start.y, line.end.x, line.end.y, color)
   }
-  drawLine(x1, y1, x2, y2){
-    ctx.strokeStyle="red";
+  drawLine(x1, y1, x2, y2, color){
+    ctx.strokeStyle=color;
     ctx.beginPath();
     ctx.moveTo(x1-this.location.x, y1-this.location.y);
     ctx.lineTo(x2-this.location.x, y2-this.location.y);

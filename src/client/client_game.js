@@ -198,3 +198,7 @@ function checkKeyUp(evt){
   if (evt.keyCode === KEY_DOWN)
     main_player.commands.down = false;
 }
+
+addEventListener("click", function() {
+  main_player.attack();
+});

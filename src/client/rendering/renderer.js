@@ -81,7 +81,15 @@ var renderer = module.exports = {
 
     this.main_player.setOrientation(mouse_loc);
 
-    this.camera.drawLineObj(this.main_player.aim);
+    // this.camera.drawLineObj(this.main_player.aim, 'red');
+
+    if(this.main_player.bullet){
+      ctx.save();
+      ctx.globalAlpha=this.main_player.bullet.transparency;
+      this.camera.drawLineObj(this.main_player.bullet.trajectory, this.main_player.bullet.color)
+      this.main_player.bullet.fade();
+      ctx.restore()
+    }
   }
 }
 

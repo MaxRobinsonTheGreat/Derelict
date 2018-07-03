@@ -52,6 +52,10 @@ var renderer = module.exports = {
     this.self_index = self_index;
   },
 
+  setBullets: function(bullets){
+    this.bullets = bullets;
+  },
+
   setSelfIndex(i){
     this.self_index = i;
   },
@@ -74,8 +78,22 @@ var renderer = module.exports = {
     this.camera.updateLocation();
     this.camera.drawCollision(platform, "blue");
 
-    this.camera.drawObjWithSprite(this.main_player);
+    let mouse_loc = this.camera.getMouseLocation();
 
+    this.main_player.setOrientation(mouse_loc);
+
+    for(var i=this.bullets.length-1; i>=0; i--){
+      let b = this.bullets[i];
+      ctx.save();
+      ctx.globalAlpha=b.transparency;
+      this.camera.drawLineObj(b.trajectory, b.color)
+      b.fade();
+      ctx.restore();
+
+      if(b.isFinished()){
+        this.bullets.splice(i);
+      }
+    }
 
     ctx.fillStyle = "white";
     ctx.font="15px Arial";
@@ -86,20 +104,7 @@ var renderer = module.exports = {
       }
     }
 
-    let mouse_loc = this.camera.getMouseLocation();
-    // let gun_point = this.main_player.getGunpoint();
-
-    this.main_player.setOrientation(mouse_loc);
-
-    // this.camera.drawLineObj(this.main_player.aim, 'red');
-
-    if(this.main_player.bullet){
-      ctx.save();
-      ctx.globalAlpha=this.main_player.bullet.transparency;
-      this.camera.drawLineObj(this.main_player.bullet.trajectory, this.main_player.bullet.color)
-      this.main_player.bullet.fade();
-      ctx.restore()
-    }
+    this.camera.drawObjWithSprite(this.main_player);
   }
 }
 

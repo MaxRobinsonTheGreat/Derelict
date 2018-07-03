@@ -13,10 +13,12 @@ var FPS = 60;
 
 var main_player = new Player();
 var others = [];
+var bullets = [];
 var self_index = -1;
 
 Renderer.setMainPlayer(main_player);
 Renderer.setOthers(others, -1);
+Renderer.setBullets(bullets)
 
 var last_update = 0;
 var delta_time = 0;
@@ -52,7 +54,7 @@ function main(){
 function Update(){
   updateDeltaTime();
 
-  updatePlayerPosition();
+  updatePlayer();
 
   updateOthers();
 
@@ -65,7 +67,7 @@ function updateDeltaTime() {
   last_update = Date.now();
 }
 
-function updatePlayerPosition() {
+function updatePlayer() {
   var old_loc = main_player.move(delta_time);
 
   if(game_core.anyIntersect(main_player, others, self_index)){
@@ -74,6 +76,15 @@ function updatePlayerPosition() {
 
   var boundry_result = game_core.checkBoundry(main_player.location, main_player.dimensions);
   main_player.location = boundry_result.loc;
+
+  makeBullet(main_player.excecuteCommands());
+}
+
+function makeBullet(bullet){
+  if(bullet){
+    bullet.startFade();
+    bullets.push(bullet);
+  }
 }
 
 function updateOthers(){
@@ -199,8 +210,16 @@ function checkKeyUp(evt){
     main_player.commands.down = false;
 }
 
-addEventListener("click", function() {
-  main_player.attack();
+addEventListener("mousedown", function() {
+  main_player.commands.left_click = true;
+  let new_bullet = main_player.attack();
+  if(new_bullet){
+    new_bullet.startFade();
+    bullets.push(new_bullet);
+  }
+});
+addEventListener("mouseup", function() {
+  main_player.commands.left_click = false;
 });
 
 $(window).resize(function() {Renderer.changeCanvasToFull();});

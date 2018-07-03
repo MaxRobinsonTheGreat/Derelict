@@ -7,12 +7,14 @@ module.exports = class {
     this.dimensions = {h:40, w:40};
     this.center = this.getCenter();
     this.gun_offset = {x:40, y:8}; //when facing right, these values are the relative transform away from the center to the gunpoint
-    this.commands = {left: false, right: false, up: false, down: false};
+    this.commands = {left: false, right: false, up: false, down: false, left_click: false};
     this.speed = 100; //pixels per second
     this.last_update = Date.now();
     this.orientation = 0; //degrees
     this.sprite_title = "Officer";
     this.aim = new Line();
+    this.bullet_wait_time = 200; //ms
+    this.last_bullet_time = 0;
   }
 
   setSprite(s){
@@ -58,6 +60,13 @@ module.exports = class {
     return(old_loc);
   }
 
+  excecuteCommands(){
+    var bullet;
+    if(this.commands.left_click)
+      bullet = this.attack();
+    return bullet;
+  }
+
   setOrientation(mouse_location){
     this.center = this.getCenter();
 
@@ -91,8 +100,13 @@ module.exports = class {
   }
 
   attack(){
-    this.bullet = new Bullet();
-    this.bullet.fireFrom(this);
-    this.bullet.startFade();
+    if(Date.now()-this.last_bullet_time >= this.bullet_wait_time){
+      var bullet = new Bullet();
+      bullet.fireFrom(this);
+      bullet.startFade();
+      this.last_bullet_time = Date.now();
+      return bullet;
+    }
+   return null;
   }
 }

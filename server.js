@@ -89,7 +89,11 @@ io.on('connection', function(connection) {
   */
   client.on('move', function(pack){
     if(!clients.has(username)){return;}
-    try{game.movePlayer(username, pack);}catch(e){}
+    try{
+      game.movePlayer(username, pack);
+    }catch(e){
+      Logger.log("SERVER: Client \'" + username + "\' sent broken data for movement." );
+    }
   });
 
   /* API 'disconnect'

@@ -16,14 +16,14 @@ module.exports = class Bullet{
 
     startFade(){
       this.last_update = Date.now();
-      this.color = "yellow";
-      this.fade_rate = .80; //fades 50% per second
+      this.color = "#f4d742";
+      this.fade_rate = .2; //fades 20% every 100 ms
       this.transparency = 1;
     }
 
     fade(){
       let delta_time = Date.now() - this.last_update;
-      this.transparency -= this.fade_rate * delta_time/1000;
+      this.transparency -= this.fade_rate * delta_time/100; //
 
       if(this.isFinished())
         this.transparency = 0;

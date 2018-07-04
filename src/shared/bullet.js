@@ -5,13 +5,17 @@ const Line = require('./line');
 module.exports = class Bullet{
     fireFrom(owner){
       this.owner = owner;
-      this.trajectory = new Line();
-
       let gun_point = owner.getGunpoint();
       let orientation = owner.orientation + 2.5 - Math.random() * 5;
       if (orientation >= 360) orientation -= 360;
-      if (orientation < 0) orientation += 360
-      this.trajectory.makeByOrientation(gun_point.x ,gun_point.y, orientation, 500);
+      if (orientation < 0) orientation += 360;
+      this.fire(gun_point.x ,gun_point.y, orientation);
+    }
+
+    fire(x, y, theta){
+      this.trajectory = new Line();
+      this.trajectory.makeByOrientation(x ,y, theta, 500);
+      this.orientation = theta;
     }
 
     startFade(){

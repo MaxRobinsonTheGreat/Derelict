@@ -96,6 +96,14 @@ io.on('connection', function(connection) {
     }
   });
 
+  client.on('attack', function(){
+    try{
+      game.attackFrom(username);
+    }catch(e){
+      Logger.log("SERVER: Client \'" + username + "\' sent broken data for an attack." );
+    }
+  });
+
   /* API 'disconnect'
      input: {}
       - removes the client data from the clients and clientbodies map

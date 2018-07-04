@@ -4,6 +4,7 @@
 const game_core = require('../shared/game_core');
 const Player = require('../shared/player');
 const Entity = require('./entity');
+const Bullet = require('../shared/bullet');
 
 const Renderer = require('./rendering/renderer');
 
@@ -84,6 +85,7 @@ function makeBullet(bullet){
   if(bullet){
     bullet.startFade();
     bullets.push(bullet);
+    socket.emit('attack');
   }
 }
 
@@ -183,6 +185,13 @@ socket.on('correction', function(pack){
   correction_counter++;
 });
 
+socket.on('bullet', function(bullet_info){
+  var bullet = new Bullet();
+  bullet.fire(bullet_info.x, bullet_info.y, bullet_info.ori);
+  bullet.startFade();
+  bullets.push(bullet);
+});
+
 
 //      --- CONTROL LISTENERS ---
 const KEY_UP=87, KEY_DOWN=83, KEY_LEFT=65, KEY_RIGHT=68;
@@ -213,10 +222,7 @@ function checkKeyUp(evt){
 addEventListener("mousedown", function() {
   main_player.commands.left_click = true;
   let new_bullet = main_player.attack();
-  if(new_bullet){
-    new_bullet.startFade();
-    bullets.push(new_bullet);
-  }
+  makeBullet(new_bullet);
 });
 addEventListener("mouseup", function() {
   main_player.commands.left_click = false;

@@ -103,7 +103,6 @@ module.exports = class {
     if(Date.now()-this.last_bullet_time >= this.bullet_wait_time){
       var bullet = new Bullet();
       bullet.fireFrom(this);
-      bullet.startFade();
       this.last_bullet_time = Date.now();
       return bullet;
     }

@@ -140,4 +140,21 @@ module.exports = class Game{
       client.player.orientation = pack.ori;
     }
   }
+
+  attackFrom(name){
+    let client = this.clients.get(name);
+    let player = client.player;
+    var bullet = player.attack();
+    if(!bullet){
+      return;
+    }
+    this.clients.forEach(function getLocations(cur_client, cur_name, map){
+      if (cur_name != name){
+        cur_client.sendBullet({x:bullet.trajectory.start.x,
+                               y:bullet.trajectory.start.y,
+                               ori:bullet.orientation
+                              });
+        }
+    });
+  }
 }

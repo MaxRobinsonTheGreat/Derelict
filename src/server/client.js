@@ -19,4 +19,8 @@ let client = module.exports = class {
   sendCorrection(sending_object) {
     this.connection.emit('correction', sending_object);
   }
+
+  sendBullet(sending_object) {
+    this.connection.emit('bullet', sending_object);
+  }
 };

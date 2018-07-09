@@ -7,7 +7,7 @@
     "build-dev": "webpack --mode=development",
     "build-production": "webpack --mode=production",
     "test": "echo 'Thomas is awesome!!!'",
-    "start": "node server.js &>> ../Log/log1.txt"
+    "start": "node server.js &>> ../Log/DerelictLog1.txt"
   },
   "author": "",
   "license": "ISC",

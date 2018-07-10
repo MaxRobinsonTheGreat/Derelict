@@ -192,6 +192,9 @@ socket.on('bullet', function(bullet_info){
   bullets.push(bullet);
 });
 
+socket.on('rejected', function(){
+  alert("You've been kicked from the game. Log back in.");
+});
 
 //      --- CONTROL LISTENERS ---
 const KEY_UP=87, KEY_DOWN=83, KEY_LEFT=65, KEY_RIGHT=68;

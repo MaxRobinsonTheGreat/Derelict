@@ -7,14 +7,14 @@ const Game = require("./src/server/game");
 const Client = require("./src/server/client")
 
 // Use express to open a web server
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, { wsEngine: 'ws' });
 
 var clients = new Map(); // contains socket connections and player objects
-var client_counter=0; //increments with every added client
+var client_counter=0; // increments with every added client
 
 var game = new Game("only_game", new Map());
 
@@ -40,7 +40,7 @@ app.post('/', function(req, res, next) {
 });
 
 // -- ClIENT LISTENERS --
-server.listen(4200, '0.0.0.0'); // begin listening
+server.listen(8080, '0.0.0.0'); // begin listening
 Logger.log("SERVER: listening...");
 io.on('connection', function(connection) {
   // var cur_name = (client_counter++)+"";

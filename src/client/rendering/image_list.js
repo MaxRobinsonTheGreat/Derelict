@@ -10,7 +10,15 @@ module.exports = [
 	},
 	{
 		title: "Officer",
-		src: "Officer.png",
+		src: "Officer_top.png",
+		type: "sprite",
+		rows: 1,
+		cols: 1,
+		fps: 12
+	},
+	{
+		title: "Legs",
+		src: "Legs.png",
 		type: "sprite",
 		rows: 1,
 		cols: 8,

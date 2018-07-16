@@ -38,7 +38,8 @@ var renderer = module.exports = {
 
   setMainPlayer: function(player){
       let sprite_title = player.sprite_title;
-      player.setSprite(new Sprite(player.sprite_title, player.dimensions, 2));
+      player.setSprites(new Sprite(player.top_sprite_title, player.dimensions, 2),
+                        new Sprite(player.bottom_sprite_title, player.dimensions, 2));
 
       this.main_player = player;
       this.camera = new Camera(player);
@@ -99,12 +100,19 @@ var renderer = module.exports = {
     ctx.font="15px Arial";
     for(var i in this.others){
       if (i != this.self_index || draw_self_debugger && i < this.others.length){
-        this.camera.drawObjWithSprite(this.others[i]);
+        this.drawPerson(this.others[i])
         this.camera.writeText(this.others[i].name, this.others[i].location.x, this.others[i].location.y+5);
       }
     }
 
-    this.camera.drawObjWithSprite(this.main_player);
+    this.drawPerson(this.main_player)
+  },
+
+  drawPerson(p){
+    if(p.moving){
+      this.camera.drawSpriteDirectional(p.bottom, p.location.x, p.location.y, p.orientation);
+    }
+    this.camera.drawSpriteDirectional(p.top, p.location.x, p.location.y, p.orientation);
   }
 }
 

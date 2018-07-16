@@ -83,6 +83,12 @@ module.exports = class {
 		this.srcY = this.cur_row * this.frame_height;
 	}
 
+	setCol(c){
+		if(c < 0 || c >= this.cols) return;
+		this.cur_col = c;
+		this.srcX = this.cur_col * this.frame_width;
+	}
+
 	updateFrame(){
 		var delta_time = Date.now()-this.last_update_time;
 		if(delta_time < this.wait_time)

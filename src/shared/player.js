@@ -11,14 +11,15 @@ module.exports = class {
     this.speed = 100; //pixels per second
     this.last_update = Date.now();
     this.orientation = 0; //degrees
-    this.sprite_title = "Officer";
+    this.top_sprite_title = "Officer";this.bottom_sprite_title = "Legs";
     this.aim = new Line();
     this.bullet_wait_time = 200; //ms
     this.last_bullet_time = 0;
   }
 
-  setSprite(s){
-    this.sprite = s;
+  setSprites(t, b){
+    this.top = t;
+    this.bottom = b;
   }
 
   getCenter(){
@@ -101,11 +102,13 @@ module.exports = class {
 
   attack(){
     if(Date.now()-this.last_bullet_time >= this.bullet_wait_time){
+      this.top.setCol(0);
       var bullet = new Bullet();
       bullet.fireFrom(this);
       this.last_bullet_time = Date.now();
       return bullet;
     }
+
    return null;
   }
 }

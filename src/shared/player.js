@@ -102,7 +102,8 @@ module.exports = class {
 
   attack(){
     if(Date.now()-this.last_bullet_time >= this.bullet_wait_time){
-      this.top.setCol(0);
+      if(this.top)
+        this.top.setFrame(1);
       var bullet = new Bullet();
       bullet.fireFrom(this);
       this.last_bullet_time = Date.now();

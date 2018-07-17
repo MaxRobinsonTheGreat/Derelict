@@ -83,10 +83,10 @@ module.exports = class {
 		this.srcY = this.cur_row * this.frame_height;
 	}
 
-	setCol(c){
+	setFrame(c){
 		if(c < 0 || c >= this.cols) return;
-		this.cur_col = c;
-		this.srcX = this.cur_col * this.frame_width;
+		this.cur_frame = c;
+		this.srcX = this.cur_frame * this.frame_width;
 	}
 
 	updateFrame(){

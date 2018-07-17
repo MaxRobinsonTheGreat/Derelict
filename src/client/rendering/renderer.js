@@ -3,35 +3,18 @@
 const Sprite = require('./sprite');
 const Camera = require('./camera');
 const ImageContainer = require('./image_container').getImageContainer();
-const changeCanvasToFull = require('./changeCanvasToFull');
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
 
+const changeCanvasToFull = function() {
+  let canvas = document.getElementById("canvas");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
 changeCanvasToFull();
-// $('window').resize(changeCanvasToFull());
 
-///this stuff is temporary. The fullscreen should happen before the game is started
-//it can only go fullscreen when you press
-// addEventListener("click", function() {
-//   var el = canvas,
-//     rfs = el.requestFullscreen
-//       || el.webkitRequestFullScreen
-//       || el.mozRequestFullScreen
-//       || el.msRequestFullscreen
-//   ;
-//
-//   rfs.call(el);
-//
-//   canvas.width = window.innerWidth;
-//   // console.log("resize "+document.body.clientHeight);
-//   canvas.height = window.innerHeight;
-//
-//   renderer.camera.centerToAnchor();
-// });
-//^^this makes it go full screen on click
-
-// set to true if you want to see the most recent server's version of the main players box
 var draw_self_debugger = false;
 
 var renderer = module.exports = {
@@ -112,7 +95,12 @@ var renderer = module.exports = {
     if(p.moving){
       this.camera.drawSpriteDirectional(p.bottom, p.location.x, p.location.y, p.orientation);
     }
-    this.camera.drawSpriteDirectional(p.top, p.location.x, p.location.y, p.orientation);
+    if(p.top.cur_frame === 0){
+      this.camera.drawSpriteStatic(p.top, p.location.x, p.location.y, p.orientation);
+    }
+    else {
+      this.camera.drawSpriteDirectional(p.top, p.location.x, p.location.y, p.orientation);
+    }
   }
 }
 

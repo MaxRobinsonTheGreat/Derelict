@@ -13,8 +13,8 @@ module.exports = [
 		src: "Officer_top.png",
 		type: "sprite",
 		rows: 1,
-		cols: 1,
-		fps: 12
+		cols: 8,
+		fps: 20
 	},
 	{
 		title: "Legs",

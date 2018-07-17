@@ -102,6 +102,7 @@ io.on('connection', function(connection) {
       game.attackFrom(username);
     }catch(e){
       Logger.log("SERVER: Client \'" + username + "\' sent broken data for an attack." );
+      console.log(e)
     }
   });
 

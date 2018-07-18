@@ -1,14 +1,6 @@
 'use strict'
 module.exports = [
 	{
-		title: "Alien",
-		src: "Alien.png",
-		type: "sprite",
-		rows: 4,
-		cols: 4,
-		fps: 5
-	},
-	{
 		title: "Officer",
 		src: "Officer_top.png",
 		type: "sprite",

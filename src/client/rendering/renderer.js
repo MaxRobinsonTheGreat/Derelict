@@ -3,6 +3,7 @@
 const Sprite = require('./sprite');
 const Camera = require('./camera');
 const ImageContainer = require('./image_container').getImageContainer();
+const HumanSprite = require('./human_sprite');
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
@@ -20,12 +21,12 @@ var draw_self_debugger = false;
 var renderer = module.exports = {
 
   setMainPlayer: function(player){
-      let sprite_title = player.sprite_title;
-      player.setSprites(new Sprite(player.top_sprite_title, player.dimensions, 2),
-                        new Sprite(player.bottom_sprite_title, player.dimensions, 2));
+    this.camera = new Camera(player);
 
-      this.main_player = player;
-      this.camera = new Camera(player);
+    var s = new HumanSprite(player, this.camera);
+
+    player.setSprite(s);
+    this.main_player = player;
   },
 
   setOthers: function(others, self_index){
@@ -83,24 +84,12 @@ var renderer = module.exports = {
     ctx.font="15px Arial";
     for(var i in this.others){
       if (i != this.self_index || draw_self_debugger && i < this.others.length){
-        this.drawPerson(this.others[i])
+        this.others[i].draw(this.camera);
         this.camera.writeText(this.others[i].name, this.others[i].location.x, this.others[i].location.y+5);
       }
     }
 
-    this.drawPerson(this.main_player)
-  },
-
-  drawPerson(p){
-    if(p.moving){
-      this.camera.drawSpriteDirectional(p.bottom, p.location.x, p.location.y, p.orientation);
-    }
-    if(p.top.cur_frame === 0){
-      this.camera.drawSpriteStatic(p.top, p.location.x, p.location.y, p.orientation);
-    }
-    else {
-      this.camera.drawSpriteDirectional(p.top, p.location.x, p.location.y, p.orientation);
-    }
+    this.main_player.draw(this.camera);
   }
 }
 

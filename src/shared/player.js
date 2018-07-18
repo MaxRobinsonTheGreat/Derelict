@@ -1,7 +1,7 @@
 const Line = require('./line');
 const Bullet = require('./bullet');
 
-module.exports = class {
+module.exports = class Player{
   constructor() {
     this.location = {x:20, y:20};
     this.dimensions = {h:40, w:40};
@@ -11,15 +11,17 @@ module.exports = class {
     this.speed = 100; //pixels per second
     this.last_update = Date.now();
     this.orientation = 0; //degrees
-    this.top_sprite_title = "Officer";this.bottom_sprite_title = "Legs";
     this.aim = new Line();
     this.bullet_wait_time = 200; //ms
     this.last_bullet_time = 0;
   }
 
-  setSprites(t, b){
-    this.top = t;
-    this.bottom = b;
+  setSprite(human_sprite){
+    this.sprite = human_sprite;
+  }
+
+  draw(camera){
+    this.sprite.draw(camera)
   }
 
   getCenter(){
@@ -102,8 +104,8 @@ module.exports = class {
 
   attack(){
     if(Date.now()-this.last_bullet_time >= this.bullet_wait_time){
-      if(this.top)
-        this.top.setFrame(1);
+      if(this.sprite)
+        this.sprite.top.setFrame(1);
       var bullet = new Bullet();
       bullet.fireFrom(this);
       this.last_bullet_time = Date.now();

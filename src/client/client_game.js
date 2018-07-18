@@ -163,7 +163,6 @@ socket.on('all', function(state) {
     else{
       update_queue.push({state, timestamp: Date.now()});
     }
-
 });
 
 /* API 'init_entities'
@@ -185,12 +184,23 @@ socket.on('correction', function(pack){
   correction_counter++;
 });
 
+socket.on('reduce_health', function(new_health) {
+  console.log("Health: " + new_health);
+  main_player.health = new_health;
+});
+
 socket.on('bullet', function(bullet_info){
   var bullet = new Bullet();
   bullet.fire(bullet_info.x, bullet_info.y, bullet_info.ori);
   bullet.startFade();
   bullets.push(bullet);
 });
+
+socket.on('died', function(){
+  alert("I PITY THE FOOL");
+
+  window.location.href="/";
+})
 
 socket.on('rejected', function(){
   alert("You've been kicked from the game. Log back in.");

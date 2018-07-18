@@ -1,7 +1,7 @@
 'use strict'
 
 const game_core = require("../shared/game_core");
-const logger = require("./logger")
+const Logger = require("./logger")
 const Player = require("../shared/player")
 
 module.exports = class Game{
@@ -57,7 +57,6 @@ module.exports = class Game{
       orientations.push(client.player.orientation);
     });
 
-    //why isn't this in the getLocations function?
     var self_index = 0;
     this.clients.forEach(function update(client, name, map){
       client.sendToAll({locations, orientations, self_index: self_index++});
@@ -146,10 +145,30 @@ module.exports = class Game{
     let player = client.player;
     var bullet = player.attack();
     if(!bullet){
+      Logger.log("Bullet Rejected");
       return;
     }
     this.clients.forEach(function getLocations(cur_client, cur_name, map){
       if (cur_name != name){
+        if (bullet.trajectory.checkBoxIntersect(cur_client.player)) {
+          const BULLET_DAMAGE = 10;
+
+          let current_health = cur_client.player.health;
+          cur_client.player.health -= BULLET_DAMAGE;
+          if (cur_client.player.health <= 0) {
+            Logger.log(cur_name + " died!!!");
+            if (current_health <= 0) {
+              Logger.log("Player was already dead...");
+            }
+            else {
+              cur_client.killPlayer();
+            }
+          }
+          else {
+            cur_client.reduceHealth(cur_client.player.health);
+          }
+        }
+
         cur_client.sendBullet({x:bullet.trajectory.start.x,
                                y:bullet.trajectory.start.y,
                                ori:bullet.orientation

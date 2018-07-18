@@ -59,7 +59,7 @@ io.on('connection', function(connection) {
       - restarts physics loop when the client is added to an empty client map
   */
   client.on('init_client', function(new_player_loc, init_username){
-    // Logger.log(process.memoryUsage().heapUsed + " MB"); shows how much memory the heap is using...
+    // Logger.log(process.memoryUsage().heapUsed + " MB"); //shows how much memory the heap is using...
     username = init_username; //sets the client username so it can be removed
 
     if(!clients.has(username)){
@@ -102,6 +102,8 @@ io.on('connection', function(connection) {
       game.attackFrom(username);
     }catch(e){
       Logger.log("SERVER: Client \'" + username + "\' sent broken data for an attack." );
+      Logger.log(e);
+      Logger.log(e.stack);
     }
   });
 

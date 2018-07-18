@@ -1,3 +1,5 @@
+'use strict'
+
 const image_list = require('./image_list');
 
 var image_container = module.exports = {
@@ -19,21 +21,20 @@ var image_container = module.exports = {
 
 			let img = new Image();
 
-			img.onload = () => {
-				this.imageLoaded();
-			}
-
 			img.src = "./img/" + info.src;
 			info.img = img;
 
+      img.onload = () => {
+				this.imageLoaded();
+			}
+
 			this.image_map.set(info.title, info);
 		}
-		images_info = [];
 	},
 
 	imageLoaded: function(){
 		// is this the last image to load?
-		if(this.loaded_image_counter++ != images_info.length) return;
+		if(++this.loaded_image_counter != image_list.length) return;
 		// at this point we know that all images have been loaded
 
 		this.updateSprites();

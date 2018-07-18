@@ -46,20 +46,10 @@ module.exports = class Camera{
   drawSpriteDirectional(sprite, x, y, theta){
     sprite.drawDirectional(x-this.location.x, y-this.location.y, theta);
   }
-
-  drawObjWithSprite(o){
-    if(!o.sprite){console.log("Object does not contain sprite");return;}
-    if(o.orientation){
-      if(o.moving){
-        this.drawSpriteDirectional(o.sprite, o.location.x, o.location.y, o.orientation);
-      }
-      else {
-        o.sprite.drawStaticDirectional(o.location.x-this.location.x, o.location.y-this.location.y, 0, 0, o.orientation);
-      }
-    }
-    else
-      this.drawSprite(o.sprite, o.location.x, o.location.y);
+  drawSpriteStatic(sprite, x, y, theta=0){
+    sprite.drawStaticDirectional(x-this.location.x, y-this.location.y, 0, 0, theta);
   }
+  
 
   drawCollision(box, color){
       ctx.fillStyle = color;

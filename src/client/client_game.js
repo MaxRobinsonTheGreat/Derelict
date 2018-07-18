@@ -138,7 +138,7 @@ function setState(state){
     for(var i=others.length; i<state.locations.length; i++){
       others.push(new Entity(
          state.names[i],
-         "Officer",
+         "human",
          state.locations[i],
          state.dimensions[i],
          state.orientations[i])
@@ -194,6 +194,7 @@ socket.on('bullet', function(bullet_info){
   bullet.fire(bullet_info.x, bullet_info.y, bullet_info.ori);
   bullet.startFade();
   bullets.push(bullet);
+  others[bullet_info.player].sprite.top.setFrame(1);
 });
 
 socket.on('died', function(){

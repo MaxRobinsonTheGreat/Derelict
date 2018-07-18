@@ -103,7 +103,6 @@ io.on('connection', function(connection) {
     }catch(e){
       Logger.log("SERVER: Client \'" + username + "\' sent broken data for an attack." );
       Logger.log(e);
-      Logger.log(e.stack);
     }
   });
 

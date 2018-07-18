@@ -23,4 +23,12 @@ let client = module.exports = class {
   sendBullet(sending_object) {
     this.connection.emit('bullet', sending_object);
   }
+
+  reduceHealth(sending_object) {
+    this.connection.emit('reduce_health', sending_object);
+  }
+
+  killPlayer() {
+    this.connection.emit('died');
+  }
 };

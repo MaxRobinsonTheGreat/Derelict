@@ -3,6 +3,7 @@ const Bullet = require('./bullet');
 
 module.exports = class Player{
   constructor() {
+    this.health = 100;
     this.location = {x:20, y:20};
     this.dimensions = {h:40, w:40};
     this.center = this.getCenter();

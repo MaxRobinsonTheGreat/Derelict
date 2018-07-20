@@ -106,7 +106,7 @@ module.exports = class Player{
   attack(){
     if(Date.now()-this.last_bullet_time >= this.bullet_wait_time){
       if(this.sprite)
-        this.sprite.top.setFrame(1);
+        this.sprite.shoot();
       var bullet = new Bullet();
       bullet.fireFrom(this);
       this.last_bullet_time = Date.now();

@@ -1,4 +1,5 @@
 const Sprite = require('./sprite');
+const AudioContainer = require('../sound_effects/audio_container');
 
 module.exports = class HumanSprite{
   constructor(container) {
@@ -21,5 +22,10 @@ module.exports = class HumanSprite{
     else {
       camera.drawSpriteDirectional(this.top, p.location.x, p.location.y, p.orientation);
     }
+  }
+
+  shoot(){
+    this.top.setFrame(1);
+    AudioContainer.play("Gun");
   }
 }

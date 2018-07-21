@@ -142,6 +142,15 @@ module.exports = class Game{
 
   attackFrom(name){
     let client = this.clients.get(name);
+
+    let player_index = -1;
+    let i = 0;
+    for (let n of this.clients.keys()){
+      if (n===name)
+        player_index = i;
+      i++;
+    }
+
     let player = client.player;
     var bullet = player.attack();
     if(!bullet){
@@ -171,7 +180,8 @@ module.exports = class Game{
 
         cur_client.sendBullet({x:bullet.trajectory.start.x,
                                y:bullet.trajectory.start.y,
-                               ori:bullet.orientation
+                               ori:bullet.orientation,
+                               player: player_index
                               });
         }
     });

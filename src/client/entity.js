@@ -1,6 +1,6 @@
 'use strict'
 
-const Sprite = require('./rendering/sprite');
+const HumanSprite = require('./rendering/human_sprite');
 
 module.exports = class Entity{
   constructor(name, type, location, dimensions, orientation){
@@ -11,7 +11,9 @@ module.exports = class Entity{
     this.orientation = orientation;
     this.moving = false;
 
-    this.sprite = new Sprite(type, dimensions, 2);
+    if(type == "human"){
+      this.sprite = new HumanSprite(this);
+    }
   }
 
   interpolate(startloc, endloc, d_time, delayed_time){
@@ -35,6 +37,10 @@ module.exports = class Entity{
     if((endori > 270 && startori < 90) || (endori < 90 && startori > 270)){
       this.orientation = Math.abs(diff);
     }
+  }
+
+  draw(camera){
+    this.sprite.draw(camera);
   }
 
 }

@@ -3,6 +3,7 @@
 const Sprite = require('./sprite');
 const Camera = require('./camera');
 const ImageContainer = require('./image_container').getImageContainer();
+const AudioContainer = require('../sound_effects/audio_container').loadAudioFiles();
 const HumanSprite = require('./human_sprite');
 
 var canvas = document.getElementById('canvas');

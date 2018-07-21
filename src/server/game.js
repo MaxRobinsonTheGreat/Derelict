@@ -154,7 +154,7 @@ module.exports = class Game{
     let player = client.player;
     var bullet = player.attack();
     if(!bullet){
-      Logger.log("Bullet Rejected");
+      // Logger.log("Bullet Rejected");
       return;
     }
     this.clients.forEach(function getLocations(cur_client, cur_name, map){
@@ -165,11 +165,11 @@ module.exports = class Game{
           let current_health = cur_client.player.health;
           cur_client.player.health -= BULLET_DAMAGE;
           if (cur_client.player.health <= 0) {
-            Logger.log(cur_name + " died!!!");
             if (current_health <= 0) {
-              Logger.log("Player was already dead...");
+              // Logger.log("Player was already dead...");
             }
             else {
+              Logger.log(cur_name + " died!!!");
               cur_client.killPlayer();
             }
           }

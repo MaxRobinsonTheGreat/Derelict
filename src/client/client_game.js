@@ -194,7 +194,7 @@ socket.on('bullet', function(bullet_info){
   bullet.fire(bullet_info.x, bullet_info.y, bullet_info.ori);
   bullet.startFade();
   bullets.push(bullet);
-  others[bullet_info.player].sprite.top.setFrame(1);
+  others[bullet_info.player].sprite.shoot();
 });
 
 socket.on('died', function(){

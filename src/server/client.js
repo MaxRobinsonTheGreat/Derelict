@@ -30,5 +30,6 @@ let client = module.exports = class {
 
   killPlayer() {
     this.connection.emit('died');
+    this.connection.disconnect();
   }
 };

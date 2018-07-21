@@ -20,6 +20,7 @@ var game = new Game("only_game", new Map());
 
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 // -- ROUTING --
@@ -35,8 +36,31 @@ app.post('/', function(req, res, next) {
     else {
       Logger.log('Client ' + username + ' signed in.');
       clients.set(username, '');
-      res.sendFile(__dirname + '/public/html/index.html');
+      res.sendFile(__dirname + '/public/html/game-lobby.html');
     }
+});
+app.post('/game-lobby', function(req, res, next) {
+  if(clients.has(req.body.username)) {
+    res.sendFile(__dirname + '/public/html/game-lobby.html');
+  }
+  else {
+    res.sendFile(__dirname + '/public/html/login-page.html');
+  }
+});
+app.get('/game-list', function(req, res, next) {
+  res.send({game: "works..."});
+});
+app.post('/join-game', function(req, res, next) {
+  if (clients.has(req.body.username)) { //idk about this check...
+    res.sendFile(__dirname + '/public/html/index.html');
+  }
+  else {
+    console.log("username doesn't exist");
+  }
+});
+app.post('/remove-username', function(req, res, next) {
+  clients.delete(req.body.username);
+  Logger.log("Client " + req.body.username + " left.");
 });
 
 // -- ClIENT LISTENERS --

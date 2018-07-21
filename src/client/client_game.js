@@ -198,8 +198,13 @@ socket.on('bullet', function(bullet_info){
 });
 
 socket.on('died', function(){
+  let username = localStorage.getItem('username');
 
-  window.location.href="/";
+  $.post({url: '/game-lobby', data: {username}, success: function(result) {
+    document.open();
+    document.write(result);
+    document.close();
+  }});
 })
 
 socket.on('rejected', function(){

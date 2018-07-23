@@ -170,7 +170,7 @@ module.exports = class Game{
             }
             else {
               Logger.log(cur_name + " died!!!");
-              cur_client.killPlayer();
+              cur_client.kick();
             }
           }
           else {

@@ -1,7 +1,9 @@
 let client = module.exports = class {
-  constructor(connection) {
-    this.connection = connection;
+  constructor(name) {
+    this.name = name;
+    this.connection = null;
     this.player = undefined;//added in game.js addClient()
+    this.game = null; // the name of the game that the client is connected to
   }
 
   on(name, funct) {
@@ -28,7 +30,8 @@ let client = module.exports = class {
     this.connection.emit('reduce_health', sending_object);
   }
 
-  killPlayer() {
+  kick() {
+    this.game = '';
     this.connection.emit('died');
     this.connection.disconnect();
   }

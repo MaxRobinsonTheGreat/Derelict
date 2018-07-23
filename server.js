@@ -27,6 +27,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + '/public/html/login-page.html');
 });
+
 app.post('/', function(req, res, next) {
     let username = req.body.username;
 
@@ -35,10 +36,11 @@ app.post('/', function(req, res, next) {
     }
     else {
       Logger.log('Client ' + username + ' signed in.');
-      clients.set(username, '');
+      clients.set(username, new Client(username));
       res.sendFile(__dirname + '/public/html/game-lobby.html');
     }
 });
+
 app.post('/game-lobby', function(req, res, next) {
   if(clients.has(req.body.username)) {
     res.sendFile(__dirname + '/public/html/game-lobby.html');
@@ -47,20 +49,28 @@ app.post('/game-lobby', function(req, res, next) {
     res.sendFile(__dirname + '/public/html/login-page.html');
   }
 });
+
 app.get('/game-list', function(req, res, next) {
   res.send({names:[game.name]});
 });
+
 app.post('/join-game', function(req, res, next) {
   if (clients.has(req.body.username)) { //idk about this check...
     res.sendFile(__dirname + '/public/html/index.html');
   }
   else {
-    console.log("username doesn't exist");
+    Logger.log('Nonexistent client requested a game: ' + username);
   }
 });
+
 app.post('/remove-username', function(req, res, next) {
   clients.delete(req.body.username);
-  Logger.log("Client " + req.body.username + " left.");
+
+  if(clients.game !== ''){
+    //The client is in game. Because there's only one game(for now) remove them from the Killing Floor
+    game.removeClient(req.body.username);
+  }
+  Logger.log("SERVER: Client " + req.body.username + " ended their session.");
 });
 
 // -- ClIENT LISTENERS --
@@ -68,12 +78,17 @@ server.listen(8080, '0.0.0.0'); // begin listening
 Logger.log("SERVER: listening...");
 io.on('connection', function(connection) {
   // var cur_name = (client_counter++)+"";
+  var handshakeData = connection.request;
+  var username = handshakeData._query['username'];
 
-  if(clients.size == 0){
+  if(!clients.has(username)){
+    Logger.log('Nonexistent client attempted game connection: ' + username);
+    connection.emit('rejected', "log back in ya dope");
     connection.disconnect();
+    return;
   }
-  var username;
-  var client = new Client(connection);
+  var client = clients.get(username);
+  client.connection = connection;
 
 
   /* API 'init_client'
@@ -83,16 +98,6 @@ io.on('connection', function(connection) {
       - restarts physics loop when the client is added to an empty client map
   */
   client.on('init_client', function(new_player_loc, init_username){
-    // Logger.log(process.memoryUsage().heapUsed + " MB"); //shows how much memory the heap is using...
-    username = init_username; //sets the client username so it can be removed
-
-    if(!clients.has(username)){
-      Logger.log('Nonexistent client attempted game init: ' + username);
-      client.connection.emit('rejected', "log back in ya dope");
-      connection.disconnect();
-      return;
-    }
-    clients.set(username, client);
     game.addClient(client, username, new_player_loc);
 
     Logger.log('Client ' + username + ' opened a game socket.');
@@ -117,7 +122,8 @@ io.on('connection', function(connection) {
     try{
       game.movePlayer(username, pack);
     }catch(e){
-      Logger.log("SERVER: Client \'" + username + "\' sent broken data for movement." );
+      Logger.log("SERVER: Client \'" + username + "\' movement caused error." );
+      console.log(e);
     }
   });
 
@@ -125,8 +131,8 @@ io.on('connection', function(connection) {
     try{
       game.attackFrom(username);
     }catch(e){
-      Logger.log("SERVER: Client \'" + username + "\' sent broken data for an attack." );
-      Logger.log(e);
+      Logger.log("SERVER: Client \'" + username + "\' attack caused error." );
+      console.log(e);
     }
   });
 
@@ -136,11 +142,10 @@ io.on('connection', function(connection) {
       - shuts down the physics loop if this was the last client to leave
   */
   client.on('disconnect', function(){
+    Logger.log("Client " + username + " disconnected from the game \""+client.game+"\"");
 
-    clients.delete(username); //removes from the master map. should be done when they leave the lobby
     game.removeClient(username);
-
-    Logger.log("Client " + username + " disconnected.");
+    client.game = '';
 
     if(clients.size === 0){
         game.stop();

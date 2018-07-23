@@ -16,7 +16,7 @@ const io = require('socket.io')(server, { wsEngine: 'ws' });
 var clients = new Map(); // contains socket connections and player objects
 var client_counter=0; // increments with every added client
 
-var game = new Game("only_game", new Map());
+var game = new Game("Killing Floor", new Map());
 
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/public'));
@@ -48,7 +48,7 @@ app.post('/game-lobby', function(req, res, next) {
   }
 });
 app.get('/game-list', function(req, res, next) {
-  res.send({game: "works..."});
+  res.send({names:[game.name]});
 });
 app.post('/join-game', function(req, res, next) {
   if (clients.has(req.body.username)) { //idk about this check...

@@ -1,22 +1,31 @@
 window.onload = function() {
-  $("button").click(function() {
-    console.log("sending...");
-    $.get({url: "/game-list", success: function(result) {
-      $(".game-list").append('<p class="game">' + result.game + '</p>');
+  getGameList();
+  $("refresh").click(function() {
+    getGameList();
+  });
 
-      let game_name = result.game;
-      let username = localStorage.getItem("username");
+}
 
-      $(".game").click(function() {
-        console.log("entering game...");
-        $.post({url: "/join-game", data: {username, game_name}, success: function(result) {
+function getGameList(){
+  $.get({url: "/game-list", success: function(result) {
+    $(".game-list").empty();
+
+
+    // THIS IS NOT CURRENTLY FUNCTIONAL FOR LISTS LONGER THAN ONE
+    for(var name of result.names){
+      $(".game-list").append('<p class="gameslot">' + name + '</p>');
+
+      $(".game-list").click(function() {
+        let username = localStorage.getItem("username");
+
+        $.post({url: "/join-game", data: {username, name}, success: function(result) {
           document.open();
           document.write(result);
           document.close();
         }});
       });
-    }});
-  });
+    }
+  }});
 }
 
 window.onbeforeunload = function() {

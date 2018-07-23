@@ -19,13 +19,21 @@ h3{
   color: white;
 }
 
-div {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.ship {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.game-list {
+  width: 50%;
+  position: absolute;
+  left: 25%;
 }
 
 .gameslot{
-  color: blue;
+  background-color: gray;
+  color: black;
+  text-align: center;
 }

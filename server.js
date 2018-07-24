@@ -88,6 +88,13 @@ io.on('connection', function(connection) {
     return;
   }
   var client = clients.get(username);
+  if(client.isInGame()){
+    Logger.log('Client in-game tried to join another game: ' + username);
+    connection.emit('rejected', "you are already in game");
+    connection.disconnect();
+    return;
+  }
+
   client.connection = connection;
 
 

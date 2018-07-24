@@ -35,4 +35,8 @@ let client = module.exports = class {
     this.connection.emit('died');
     this.connection.disconnect();
   }
+
+  isInGame(){
+    return this.game !== '';
+  }
 };

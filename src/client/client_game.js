@@ -199,6 +199,7 @@ socket.on('bullet', function(bullet_info){
 
 socket.on('died', function(){
   let username = sessionStorage.getItem('username');
+  clearInterval(interval);
 
   $.post({url: '/game-lobby', data: {username}, success: function(result) {
     document.open();
@@ -208,6 +209,7 @@ socket.on('died', function(){
 })
 
 socket.on('rejected', function(){
+  clearInterval(interval);
   alert("You've been kicked from the game. Log back in.");
 });
 
@@ -246,10 +248,8 @@ addEventListener("mouseup", function() {
   main_player.commands.left_click = false;
 });
 
-// window.onUnload = function() {
-//   let username = sessionStorage.getItem("username");
-//   sessionStorage.removeItem("username");
-//   $.post({url: "/remove-username", data: {username}});
+// window.onBeforeUnload = function() {
+//
 // }
 
 $(window).resize(function() {Renderer.changeCanvasToFull();});

@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Derelict</title>
     <link rel="stylesheet" href="/css/login.css">
+    <script src="/js/login.js"></script>
+    <script src="/jquery/dist/jquery.min.js"></script>
   </head>
   <body>
     <audio autoplay loop controls>
@@ -11,7 +13,7 @@
         Your browser does not support the audio element.
     </audio>
 
-    <form class="login" id="login-form" onsubmit="saveUsername()" method="post">
+    <form class="login" id="login-form" onsubmit="login()">
       <h3>Enter Officer Name</h3>
       <input type="text" name="username" value="" required="required" id="username">
       <button type="submit" name="submit_button">Submit</button>
@@ -21,7 +23,5 @@
       <h1>DERELICT</h1>
       <img src="img/TheWatcher.png" alt="The SS Watcher" title = "The SS Watcher">
     </div>
-
-    <script src="/js/login.js"></script>
   </body>
 </html>

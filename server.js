@@ -27,16 +27,16 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + '/public/html/login-page.html');
 });
-app.post('/', function(req, res, next) {
+app.post('/login', function(req, res, next) {
     let username = req.body.username;
 
     if(clients.has(username)) {
-      res.sendFile(__dirname + '/public/html/login-page.html');
+      res.send(false);
     }
     else {
       Logger.log('Client ' + username + ' signed in.');
       clients.set(username, '');
-      res.sendFile(__dirname + '/public/html/game-lobby.html');
+      res.send(true);
     }
 });
 app.post('/game-lobby', function(req, res, next) {
@@ -48,9 +48,10 @@ app.post('/game-lobby', function(req, res, next) {
   }
 });
 app.get('/game-list', function(req, res, next) {
-  res.send({names:[game.name]});
+  res.send({names:[game.name, "fat boy"]});
 });
 app.post('/join-game', function(req, res, next) {
+  // console.log(req.body.game_name);
   if (clients.has(req.body.username)) { //idk about this check...
     res.sendFile(__dirname + '/public/html/index.html');
   }
@@ -58,10 +59,10 @@ app.post('/join-game', function(req, res, next) {
     console.log("username doesn't exist");
   }
 });
-app.post('/remove-username', function(req, res, next) {
-  clients.delete(req.body.username);
-  Logger.log("Client " + req.body.username + " left.");
-});
+// app.post('/remove-username', function(req, res, next) {
+//   clients.delete(req.body.username);
+//   Logger.log("Client " + req.body.username + " left.");
+// });
 
 // -- ClIENT LISTENERS --
 server.listen(8080, '0.0.0.0'); // begin listening
@@ -89,6 +90,9 @@ io.on('connection', function(connection) {
     if(!clients.has(username)){
       Logger.log('Nonexistent client attempted game init: ' + username);
       client.connection.emit('rejected', "log back in ya dope");
+      for(let client in clients) {
+        console.log(client);
+      }
       connection.disconnect();
       return;
     }

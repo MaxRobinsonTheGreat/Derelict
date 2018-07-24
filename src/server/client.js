@@ -37,6 +37,6 @@ let client = module.exports = class {
   }
 
   isInGame(){
-    return this.game !== '';
+    return (this.game !== '' && this.game !== null);
   }
 };

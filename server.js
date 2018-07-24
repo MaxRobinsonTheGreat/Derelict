@@ -51,16 +51,18 @@ app.post('/game-lobby', function(req, res, next) {
 });
 
 app.get('/game-list', function(req, res, next) {
-  res.send({names:[game.name, "fat boy"]});
+  res.send({names:[game.name]});
 });
 
 app.post('/join-game', function(req, res, next) {
   // console.log(req.body.game_name);
-  if (clients.has(req.body.username)) { //idk about this check...
+  let username = req.body.username
+  if (clients.has(username)) { //idk about this check...
     res.sendFile(__dirname + '/public/html/index.html');
   }
   else {
     Logger.log('Nonexistent client requested a game page: ' + username);
+    // TODO: send login page
   }
 });
 

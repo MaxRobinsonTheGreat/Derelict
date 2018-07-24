@@ -48,7 +48,7 @@ function main(){
   interval = setInterval(function(){Update();Renderer.render();}, 1000/FPS);
 
   //make sure the default position is not colliding with anything
-  socket.emit('init_client', main_player.location, localStorage.getItem("username"));
+  socket.emit('init_client', main_player.location, sessionStorage.getItem("username"));
 }
 
 //        --- UPDATE ---
@@ -198,7 +198,7 @@ socket.on('bullet', function(bullet_info){
 });
 
 socket.on('died', function(){
-  let username = localStorage.getItem('username');
+  let username = sessionStorage.getItem('username');
 
   $.post({url: '/game-lobby', data: {username}, success: function(result) {
     document.open();
@@ -245,5 +245,11 @@ addEventListener("mousedown", function() {
 addEventListener("mouseup", function() {
   main_player.commands.left_click = false;
 });
+
+// window.onUnload = function() {
+//   let username = sessionStorage.getItem("username");
+//   sessionStorage.removeItem("username");
+//   $.post({url: "/remove-username", data: {username}});
+// }
 
 $(window).resize(function() {Renderer.changeCanvasToFull();});

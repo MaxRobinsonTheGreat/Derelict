@@ -60,14 +60,14 @@ app.post('/join-game', function(req, res, next) {
     res.sendFile(__dirname + '/public/html/index.html');
   }
   else {
-    Logger.log('Nonexistent client requested a game: ' + username);
+    Logger.log('Nonexistent client requested a game page: ' + username);
   }
 });
 
 app.post('/remove-username', function(req, res, next) {
   clients.delete(req.body.username);
 
-  if(clients.game !== ''){
+  if(clients.isInGame()){
     //The client is in game. Because there's only one game(for now) remove them from the Killing Floor
     game.removeClient(req.body.username);
   }
@@ -89,6 +89,7 @@ io.on('connection', function(connection) {
     return;
   }
   var client = clients.get(username);
+
   if(client.isInGame()){
     Logger.log('Client in-game tried to join another game: ' + username);
     connection.emit('rejected', "you are already in game");
@@ -97,7 +98,7 @@ io.on('connection', function(connection) {
   }
 
   client.connection = connection;
-
+  client.game = game.name;
 
   /* API 'init_client'
      input: {x, y}
@@ -153,7 +154,6 @@ io.on('connection', function(connection) {
     Logger.log("Client " + username + " disconnected from the game \""+client.game+"\"");
 
     game.removeClient(username);
-    client.game = '';
 
     if(clients.size === 0){
         game.stop();

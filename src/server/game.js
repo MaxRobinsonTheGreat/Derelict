@@ -103,6 +103,7 @@ module.exports = class Game{
   }
 
   removeClient(name){
+    this.clients.get(name).game = '';
     this.clients.delete(name);
     this.initEntities();
   }

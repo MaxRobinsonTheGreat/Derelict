@@ -46,7 +46,7 @@ app.post('/game-lobby', function(req, res, next) {
     res.sendFile(__dirname + '/public/html/game-lobby.html');
   }
   else {
-    res.sendFile(__dirname + '/public/html/login-page.html');
+    // res.sendFile(__dirname + '/public/html/login-page.html');
   }
 });
 

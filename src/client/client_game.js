@@ -26,7 +26,7 @@ var delta_time = 0;
 
 var update_queue = [];
 var oldest_update;
-var update_delay = 100; //millis
+var update_delay = 100; //millisF
 var correction_counter = 0;
 
 // connects at the ip addess and port of the page

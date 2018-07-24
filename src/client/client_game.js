@@ -30,7 +30,7 @@ var update_delay = 100; //millis
 var correction_counter = 0;
 
 // connects at the ip addess and port of the page
-var socket = io.connect();
+var socket = io.connect({ query: "username="+localStorage.getItem("username") });
 
 socket.on('connect', function(data) {
    main();

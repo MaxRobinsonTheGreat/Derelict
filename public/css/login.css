@@ -32,6 +32,14 @@ h3{
   left: 25%;
 }
 
+
+.game-list p:hover{
+  background-color: white;
+}
+.game-list p:active{
+  background-color: black;
+}
+
 .game-list p {
   background-color: gray;
   color: black;

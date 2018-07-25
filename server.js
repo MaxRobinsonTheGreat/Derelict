@@ -4,7 +4,8 @@
 
 const Logger = require("./src/server/logger");
 const Game = require("./src/server/game");
-const Client = require("./src/server/client")
+const Client = require("./src/server/client");
+const HeartMonitor = require("./src/server/heart_monitor");
 
 // Use express to open a web server
 const express = require('express');
@@ -17,6 +18,9 @@ var clients = new Map(); // contains socket connections and player objects
 var client_counter=0; // increments with every added client
 
 var game = new Game("Killing Floor", new Map());
+
+HeartMonitor.setClients(clients);
+HeartMonitor.beginMonitor();
 
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/public'));
@@ -36,7 +40,9 @@ app.post('/login', function(req, res, next) {
     }
     else {
       Logger.log('Client ' + username + ' signed in.');
-      clients.set(username, new Client(username));
+      let new_client = new Client(username)
+      clients.set(username, new_client);
+      HeartMonitor.beat(new_client);
       res.send(true);
     }
 });
@@ -44,6 +50,7 @@ app.post('/login', function(req, res, next) {
 app.post('/game-lobby', function(req, res, next) {
   if(clients.has(req.body.username)) {
     res.sendFile(__dirname + '/public/html/game-lobby.html');
+    HeartMonitor.beat(clients.get(req.body.username));
   }
   else {
     // res.sendFile(__dirname + '/public/html/login-page.html');
@@ -59,6 +66,7 @@ app.post('/join-game', function(req, res, next) {
   let username = req.body.username
   if (clients.has(username)) { //idk about this check...
     res.sendFile(__dirname + '/public/html/index.html');
+    HeartMonitor.beat(clients.get(username));
   }
   else {
     Logger.log('Nonexistent client requested a game page: ' + username);
@@ -67,14 +75,23 @@ app.post('/join-game', function(req, res, next) {
 });
 
 app.post('/remove-username', function(req, res, next) {
-  clients.delete(req.body.username);
-
-  if(clients.isInGame()){
-    //The client is in game. Because there's only one game(for now) remove them from the Killing Floor
-    game.removeClient(req.body.username);
-  }
-  Logger.log("SERVER: Client " + req.body.username + " ended their session.");
+  destroyClient(req.body.username);
+  Logger.log("SERVER: Client " + client.name + " has been removed from the server by request.");
 });
+
+// this function must be redefined
+HeartMonitor.declareDeath = function(client){
+  destroyClient(client.name);
+  Logger.log("SERVER: Client " + client.name + " has been removed from the server due to inactivity");
+};
+
+function destroyClient(name){
+  if(clients.get(name).isInGame()){
+    //The client is in game. Because there's only one game(for now) remove them from the Killing Floor
+    game.removeClient(name);
+  }
+  clients.delete(name);
+}
 
 // -- ClIENT LISTENERS --
 server.listen(8080, '0.0.0.0'); // begin listening

@@ -113,7 +113,7 @@ io.on('connection', function(connection) {
 
     Logger.log('Client ' + username + ' opened a game socket.');
 
-    if(clients.size <= 1 && !game.isRunning()) {
+    if(game.clients.size <= 1 && !game.isRunning()) {
       try{
         game.start();
         Logger.log("SERVER: Game \'" + game.name + "\' started." );
@@ -157,7 +157,7 @@ io.on('connection', function(connection) {
 
     game.removeClient(username);
 
-    if(clients.size === 0){
+    if(game.clients.size === 0){
         game.stop();
         Logger.log("SERVER: Game \'" + game.name + "\' shut down." );
     }

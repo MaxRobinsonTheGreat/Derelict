@@ -17,7 +17,7 @@ function setLoginClickListener() {
           document.close();
         }});
       } else {
-        console.log("Username is already taken...");
+        alert("Username is already taken...");
       }
     }});
   });

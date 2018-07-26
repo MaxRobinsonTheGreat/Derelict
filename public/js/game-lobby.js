@@ -32,7 +32,7 @@ function goFullScreen() {
   var page = document.body;
   if (page.requestFullscreen)
     page.requestFullscreen();
-  else if (page.mozRequestFullScreen)  /* Firefox */
+  else if (page.mozRequestFullScreen) {}  /* Firefox */
     // page.mozRequestFullScreen();
   else if (page.webkitRequestFullscreen) /* Chrome, Safari and Opera */
     page.webkitRequestFullscreen();

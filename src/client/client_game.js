@@ -249,8 +249,4 @@ addEventListener("mouseup", function() {
   main_player.commands.left_click = false;
 });
 
-// window.onBeforeUnload = function() {
-//
-// }
-
 $(window).resize(function() {Renderer.changeCanvasToFull();});

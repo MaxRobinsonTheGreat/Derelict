@@ -1,24 +1,47 @@
-canvas {
-    /* padding-left: 0;
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto; */
-    display: block; */
-
-    margin: 0;
-    padding: 0;
-    /* width: 100vw;
-    height: 100vh; */
-    /* border: 1px solid black; */
-    cursor: crosshair;
+body{
+  background-image: url("../img/Space.png");
+  background-position: center;
 }
 
-html, body, div{
-    margin: 0;
-    padding: 0;
+h1{
+  color: Red;
+  text-align: center;
+  font-family: "Lucida Console";
 }
 
-* {
-  margin: 0;
-  padding: 0;
+h4{
+  color: gray;
+  text-align: center;
+  font-family: "Lucida Console";
+}
+
+h3{
+  color: white;
+}
+
+.ship {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.game-list {
+  width: 50%;
+  position: absolute;
+  left: 25%;
+}
+
+
+.game-list p:hover{
+  background-color: white;
+}
+.game-list p:active{
+  background-color: black;
+}
+
+.game-list p {
+  background-color: gray;
+  color: black;
+  text-align: center;
 }

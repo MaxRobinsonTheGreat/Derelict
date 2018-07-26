@@ -1,0 +1,44 @@
+canvas {
+    display: block;
+    margin: 0;
+    padding: 0;
+    cursor: crosshair;
+}
+
+html, body, div{
+    margin: 0;
+    padding: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.control-panel{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width:200px;
+  height:100px;
+  background-color: lightgray;
+  outline: 5px solid darkgray;
+}
+
+#life-bar{
+  background: lightgray;
+  width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: blue;
+}
+
+p{
+  /* The texts shouldn't be selectable or everytime you shoot it will select the text */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

@@ -185,8 +185,9 @@ socket.on('correction', function(pack){
 });
 
 socket.on('reduce_health', function(new_health) {
-  console.log("Health: " + new_health);
   main_player.health = new_health;
+  let life_bar = document.getElementById("life-bar");
+  life_bar.value = new_health;
 });
 
 socket.on('bullet', function(bullet_info){

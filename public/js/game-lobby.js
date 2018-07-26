@@ -23,9 +23,22 @@ function getGameList(){
         document.write(result);
         document.close();
       }});
+      goFullScreen();
     });
   }});
 }
+
+function goFullScreen() {
+  var page = document.body;
+  if (page.requestFullscreen)
+    page.requestFullscreen();
+  else if (page.mozRequestFullScreen)  /* Firefox */
+    page.mozRequestFullScreen();
+  else if (page.webkitRequestFullscreen) /* Chrome, Safari and Opera */
+    page.webkitRequestFullscreen();
+  else if (view_port.msRequestFullscreen) /* IE/Edge */
+    page.msRequestFullscreen();
+};
 
 // window.onbeforeunload = function() {
 //   let username = sessionStorage.getItem("username");

@@ -10,12 +10,14 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext("2d");
 
 const changeCanvasToFull = function() {
-  let canvas = document.getElementById("canvas");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-}
+};
 
-changeCanvasToFull();
+window.onload = function(){
+  changeCanvasToFull();
+  renderer.camera.centerToAnchor();
+}
 
 var draw_self_debugger = false;
 
@@ -31,9 +33,6 @@ var renderer = module.exports = {
   },
 
   setOthers: function(others, self_index){
-    // for(let o of others){
-    //   o.sprite = new Sprite("Person", o.dimensions, .5);
-    // }
     this.others = others;
     this.self_index = self_index;
   },

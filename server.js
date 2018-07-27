@@ -78,8 +78,8 @@ app.post('/join-game', function(req, res, next) {
 
 app.post('/remove-username', function(req, res, next) {
   try {
-    Logger.log("SERVER: Client " + username + " has been removed from the server by request.");
     let username = req.body.username;
+    Logger.log("SERVER: Client " + username + " has been removed from the server by request.");
     HeartMonitor.removeClient(username);
     res.sendFile(__dirname + '/public/html/login-page.html');
   } catch(e) {

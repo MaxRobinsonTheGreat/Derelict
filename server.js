@@ -20,7 +20,6 @@ var client_counter=0; // increments with every added client
 var game = new Game("Killing Floor", new Map());
 
 HeartMonitor.setClients(clients);
-HeartMonitor.beginMonitor();
 
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/public'));
@@ -34,6 +33,9 @@ app.get('/', function(req, res, next) {
 
 app.post('/login', function(req, res, next) {
     let username = req.body.username;
+    if(!HeartMonitor.isRunning()) {
+      HeartMonitor.beginMonitor();
+    }
 
     if(clients.has(username)) {
       res.send(false);
@@ -75,25 +77,30 @@ app.post('/join-game', function(req, res, next) {
 });
 
 app.post('/remove-username', function(req, res, next) {
-  let username = req.body.username;
-  destroyClient(username);
-  Logger.log("SERVER: Client " + username + " has been removed from the server by request.");
-  res.sendFile(__dirname + '/public/html/login-page.html');
+  try {
+    Logger.log("SERVER: Client " + username + " has been removed from the server by request.");
+    let username = req.body.username;
+    HeartMonitor.removeClient(username);
+    res.sendFile(__dirname + '/public/html/login-page.html');
+  } catch(e) {
+    Logger.log(e);
+    res.sendFile(__dirname + '/public/html/login-page.html');
+  }
 });
 
 // this function must be redefined
-HeartMonitor.declareDeath = function(client){
-  destroyClient(client.name);
-  Logger.log("SERVER: Client " + client.name + " has been removed from the server due to inactivity");
-};
+// HeartMonitor.declareDeath = function(client){
+//   destroyClient(client.name);
+//   Logger.log("SERVER: Client " + client.name + " has been removed from the server due to inactivity");
+// };
 
-function destroyClient(name){
-  if(clients.get(name).isInGame()){
-    //The client is in game. Because there's only one game(for now) remove them from the Killing Floor
-    game.removeClient(name);
-  }
-  clients.delete(name);
-}
+// function destroyClient(name){
+//   if(clients.get(name).isInGame()){
+//     //The client is in game. Because there's only one game(for now) remove them from the Killing Floor
+//     game.removeClient(name);
+//   }
+//   clients.delete(name);
+// }
 
 // -- ClIENT LISTENERS --
 server.listen(8080, '0.0.0.0'); // begin listening

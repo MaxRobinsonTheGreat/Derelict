@@ -75,8 +75,10 @@ app.post('/join-game', function(req, res, next) {
 });
 
 app.post('/remove-username', function(req, res, next) {
-  destroyClient(req.body.username);
-  Logger.log("SERVER: Client " + client.name + " has been removed from the server by request.");
+  let username = req.body.username;
+  destroyClient(username);
+  Logger.log("SERVER: Client " + username + " has been removed from the server by request.");
+  res.sendFile(__dirname + '/public/html/login-page.html');
 });
 
 // this function must be redefined

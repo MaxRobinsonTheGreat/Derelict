@@ -1,8 +1,26 @@
 window.onload = function() {
   getGameList();
+  setButtons();
+}
+
+function setButtons() {
   $("#refresh-button").click(function() {
     getGameList();
   });
+
+  $("#signout-button").click(function() {
+    signout();
+  });
+}
+
+function signout() {
+  let username = sessionStorage.getItem("username");
+  $.post({url: '/remove-username', data: {username}, success: function(result){
+    sessionStorage.removeItem("username");
+    document.open();
+    document.write(result);
+    document.close();
+  }});
 }
 
 function getGameList(){

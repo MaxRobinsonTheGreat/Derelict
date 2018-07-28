@@ -79,8 +79,8 @@ app.post('/join-game', function(req, res, next) {
 app.post('/remove-username', function(req, res, next) {
   try {
     let username = req.body.username;
+    destroyClient(username);
     Logger.log("SERVER: Client " + username + " has been removed from the server by request.");
-    HeartMonitor.removeClient(username);
     res.sendFile(__dirname + '/public/html/login-page.html');
   } catch(e) {
     Logger.log(e);
@@ -94,13 +94,13 @@ app.post('/remove-username', function(req, res, next) {
 //   Logger.log("SERVER: Client " + client.name + " has been removed from the server due to inactivity");
 // };
 
-// function destroyClient(name){
-//   if(clients.get(name).isInGame()){
-//     //The client is in game. Because there's only one game(for now) remove them from the Killing Floor
-//     game.removeClient(name);
-//   }
-//   clients.delete(name);
-// }
+function destroyClient(name){
+  if(clients.get(name).isInGame()){
+    //The client is in game. Because there's only one game(for now) remove them from the Killing Floor
+    game.removeClient(name);
+  }
+  clients.delete(name);
+}
 
 // -- ClIENT LISTENERS --
 server.listen(8080, '0.0.0.0'); // begin listening

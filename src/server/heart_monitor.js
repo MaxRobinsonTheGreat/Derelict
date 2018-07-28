@@ -13,22 +13,17 @@ module.exports = {
   beginMonitor: function() {
     this.monitor_time = 30; // 30 seconds between each check
     this.interval = setInterval(function(){this.monitor();}.bind(this), this.monitor_time * 1000);
-		// Logger.log("HeartMonitor: Started");
+		Logger.log("HEARTMONITOR: monitoring...");
   },
 
 	pauseMonitor: function() {
 		clearInterval(this.interval);
 		this.interval = null;
-		// Logger.log("HeartMonitor: Paused");
+		Logger.log("HEARTMONITOR: Paused.");
 	},
 
 	isRunning: function() {
-		if(this.interval != null) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return this.interval != null;
 	},
 
   // called every 30 seconds
@@ -46,8 +41,11 @@ module.exports = {
       return;
     }
     if (Date.now() - client.last_beat > this.survival_time * 60 * 1000) {
-      this.declareDeath(client);
+      this.destroyClient(client);
     }
+		if(this.clients.size == 0) {
+			this.pauseMonitor();
+		}
   },
 
   // resets the clients last heart beat to now
@@ -55,22 +53,13 @@ module.exports = {
     client.last_beat = Date.now();
   },
 
-  // this function is redefined in the server.js so it has access the the game
-  declareDeath: function(client){
-	  destroyClient(client.name);
-	  Logger.log("HeartMonitor: Client " + client.name + " has been removed from the server due to inactivity");
-	},
-
-	removeClient: function destroyClient(name){
-	  if(!this.clients.get(name).isInGame()){
-			this.clients.delete(name);
+	destroyClient: function(client){
+	  if(!client.isInGame()){
+			this.clients.delete(client.name);
+			Logger.log("HEARTMONITOR: Client " + client.name + " removed due to inactivity");
 	  }
 		else {
-			Logger.log("HeartMonitor: Tried to remove " + name + " when they were in game.");
-
-		}
-		if(this.clients.size == 0) {
-			this.pauseMonitor();
+			Logger.log("HEARTMONITOR: Tried to remove " + client.name + " when they were in game.");
 		}
 	}
 

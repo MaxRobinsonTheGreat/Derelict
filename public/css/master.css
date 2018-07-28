@@ -9,7 +9,7 @@ h1{
   font-family: "Lucida Console";
 }
 
-h4{
+h4, span{
   order: 1;
   color: gray;
   text-align: center;
@@ -39,6 +39,10 @@ h3{
 
 #signout-button {
   order: 2;
+}
+
+#username-display {
+  /* text-align: right; */
 }
 
 .ship {

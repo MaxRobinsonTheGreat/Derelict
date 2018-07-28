@@ -1,6 +1,11 @@
 window.onload = function() {
   getGameList();
   setButtons();
+  setUsername();
+}
+
+function setUsername() {
+  $("#username-display").append(sessionStorage.getItem("username"));
 }
 
 function setButtons() {

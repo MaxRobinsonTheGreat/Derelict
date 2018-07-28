@@ -13,13 +13,13 @@ module.exports = {
   beginMonitor: function() {
     this.monitor_time = 30; // 30 seconds between each check
     this.interval = setInterval(function(){this.monitor();}.bind(this), this.monitor_time * 1000);
-		Logger.log("HeartMonitor: Started");
+		// Logger.log("HeartMonitor: Started");
   },
 
 	pauseMonitor: function() {
 		clearInterval(this.interval);
 		this.interval = null;
-		Logger.log("HeartMonitor: Paused");
+		// Logger.log("HeartMonitor: Paused");
 	},
 
 	isRunning: function() {

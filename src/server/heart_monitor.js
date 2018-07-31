@@ -1,5 +1,5 @@
 'use strict'
-
+const Logger = require("./logger");
 module.exports = {
 
 	setClients: function(clients){
@@ -13,7 +13,18 @@ module.exports = {
   beginMonitor: function() {
     this.monitor_time = 30; // 30 seconds between each check
     this.interval = setInterval(function(){this.monitor();}.bind(this), this.monitor_time * 1000);
+		Logger.log("HEARTMONITOR: monitoring...");
   },
+
+	pauseMonitor: function() {
+		clearInterval(this.interval);
+		this.interval = null;
+		Logger.log("HEARTMONITOR: Paused.");
+	},
+
+	isRunning: function() {
+		return this.interval != null;
+	},
 
   // called every 30 seconds
 	monitor: function(title){
@@ -30,8 +41,11 @@ module.exports = {
       return;
     }
     if (Date.now() - client.last_beat > this.survival_time * 60 * 1000) {
-      this.declareDeath(client);
+      this.destroyClient(client);
     }
+		if(this.clients.size == 0) {
+			this.pauseMonitor();
+		}
   },
 
   // resets the clients last heart beat to now
@@ -39,9 +53,14 @@ module.exports = {
     client.last_beat = Date.now();
   },
 
-  // this function is redefined in the server.js so it has access the the game
-  declareDeath: function(client){
-    console.log("ERROR: The declareDeath function has not been implemented");
-  }
+	destroyClient: function(client){
+	  if(!client.isInGame()){
+			this.clients.delete(client.name);
+			Logger.log("HEARTMONITOR: Client " + client.name + " removed due to inactivity");
+	  }
+		else {
+			Logger.log("HEARTMONITOR: Tried to remove " + client.name + " when they were in game.");
+		}
+	}
 
 }

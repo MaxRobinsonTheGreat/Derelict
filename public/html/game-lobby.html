@@ -8,12 +8,16 @@
 		<script src="/jquery/dist/jquery.min.js"></script>
 	</head>
 	<body>
-      <h1> DERELICT </h1>
+		<span id="username-display">Signed in as </span>
+		<h1>DERELICT</h1>
 
-			<div>
+			<div id="mission-assignments">
 				<h4>Mission Assignments</h4>
-				<button type="button" id="refresh-button">Refresh List</button>
-				<div class = "game-list"> no games available... </div>
+				<div id="lobby-buttons">
+					<button type="button" id="refresh-button">Refresh List</button>
+					<button type="button" id="signout-button">Sign out</button>
+				</div>
 			</div>
+			<div class="game-list"> no games available... </div>
 	</body>
 </html>

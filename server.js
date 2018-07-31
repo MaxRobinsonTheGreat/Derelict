@@ -19,7 +19,6 @@ var clients = new Map(); // contains socket connections and player objects
 var game = new Game("Killing Floor", new Map()); // new map here is just clients in this specific game
 
 HeartMonitor.setClients(clients);
-HeartMonitor.beginMonitor();
 
 app.use(express.static(__dirname + '/node_modules')); // makes node_modules folder publicly accessible
 app.use(express.static(__dirname + '/public')); // makes public folder publicly accessible
@@ -33,6 +32,9 @@ app.get('/', function(req, res, next) {
 
 app.post('/login', function(req, res, next) {
     let username = req.body.username;
+    if(!HeartMonitor.isRunning()) {
+      HeartMonitor.beginMonitor();
+    }
 
     if(clients.has(username)) {
       res.send(false);
@@ -74,15 +76,22 @@ app.post('/join-game', function(req, res, next) {
 });
 
 app.post('/remove-username', function(req, res, next) {
-  destroyClient(req.body.username);
-  Logger.log("SERVER: Client " + client.name + " has been removed from the server by request.");
+  try {
+    let username = req.body.username;
+    destroyClient(username);
+    Logger.log("SERVER: Client " + username + " has been removed from the server by request.");
+    res.sendFile(__dirname + '/public/html/login-page.html');
+  } catch(e) {
+    Logger.log(e);
+    res.sendFile(__dirname + '/public/html/login-page.html');
+  }
 });
 
 // this function must be redefined
-HeartMonitor.declareDeath = function(client){
-  destroyClient(client.name);
-  Logger.log("SERVER: Client " + client.name + " has been removed from the server due to inactivity");
-};
+// HeartMonitor.declareDeath = function(client){
+//   destroyClient(client.name);
+//   Logger.log("SERVER: Client " + client.name + " has been removed from the server due to inactivity");
+// };
 
 function destroyClient(name){
   if(clients.get(name).isInGame()){

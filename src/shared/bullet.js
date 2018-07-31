@@ -3,6 +3,9 @@
 const Line = require('./line');
 
 module.exports = class Bullet{
+
+    // This section is called on both client and server (fireFrom, fire)
+
     fireFrom(owner){
       this.owner = owner;
       let gun_point = owner.getGunpoint();
@@ -17,6 +20,9 @@ module.exports = class Bullet{
       this.trajectory.makeByOrientation(x ,y, theta, 500);
       this.orientation = theta;
     }
+
+
+    //This section is called on only client (startFade, fade, isFinished)
 
     startFade(){
       this.last_update = Date.now();

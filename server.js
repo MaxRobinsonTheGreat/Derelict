@@ -15,15 +15,14 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, { wsEngine: 'ws' });
 
 var clients = new Map(); // contains socket connections and player objects
-var client_counter=0; // increments with every added client
 
-var game = new Game("Killing Floor", new Map());
+var game = new Game("Killing Floor", new Map()); // new map here is just clients in this specific game
 
 HeartMonitor.setClients(clients);
 HeartMonitor.beginMonitor();
 
-app.use(express.static(__dirname + '/node_modules'));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/node_modules')); // makes node_modules folder publicly accessible
+app.use(express.static(__dirname + '/public')); // makes public folder publicly accessible
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -97,7 +96,8 @@ function destroyClient(name){
 server.listen(8080, '0.0.0.0'); // begin listening
 Logger.log("SERVER: listening...");
 io.on('connection', function(connection) {
-  // var cur_name = (client_counter++)+"";
+
+  // Checking user exists, whether or not user is in game, etc. (starting housekeeping)
   var handshakeData = connection.request;
   var username = handshakeData._query['username'];
 
@@ -155,6 +155,7 @@ io.on('connection', function(connection) {
     }
   });
 
+  //TODO: API comment for attack
   client.on('attack', function(){
     try{
       game.attackFrom(username);

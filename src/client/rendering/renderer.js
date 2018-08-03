@@ -95,4 +95,4 @@ var renderer = module.exports = {
 
 var platform = {};
 platform.location = {x:0, y:0};
-platform.dimensions = {h:400,w:600};
+platform.dimensions = {h:300,w:300};

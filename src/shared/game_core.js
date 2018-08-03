@@ -8,6 +8,10 @@
     It's important to note that no DATA is being shared (or even could be shared) through this file, only functionality.
     The server and client(s) have their own copies of this file and cannot communicate through the core.
 */
+
+const Room = require('./room');
+
+var room = new Room("empty", 0 , 0)
 module.exports = {
 
   getLocationObj: function(x, y) {
@@ -27,6 +31,11 @@ module.exports = {
     if(loc.x < 0) {loc.x = 0;was_correction = true}
     if(loc.y < 0) {loc.y = 0;was_correction = true}
     return {loc, was_correction};
+  },
+
+  checkRoomCollision: function(player){
+    // let room = player.cur_room;
+    return room.checkBoundry(player);
   },
 
   checkIntersect: function(obj1, obj2){

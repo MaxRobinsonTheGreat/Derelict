@@ -75,8 +75,7 @@ function updatePlayer() {
     main_player.location = old_loc;
   }
 
-  var boundry_result = game_core.checkBoundry(main_player.location, main_player.dimensions);
-  main_player.location = boundry_result.loc;
+  game_core.checkRoomCollision(main_player);
 
   makeBullet(main_player.excecuteCommands());
 }

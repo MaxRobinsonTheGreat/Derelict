@@ -130,7 +130,9 @@ module.exports = class Game{
 
     var collision = this.collided({dimensions: client.player.dimensions, location: predicted_location}, name);
 
-    if(collision || x_dif > max_distance || y_dif > max_distance){
+    var wall_collision = game_core.checkRoomCollision({dimensions: client.player.dimensions, location: predicted_location})
+
+    if(wall_collision || collision || x_dif > max_distance || y_dif > max_distance){
       client.player.last_update = old_time;
       client.player.correction_counter++;
       client.sendCorrection({corrected_location: server_location, cc: pack.cc});

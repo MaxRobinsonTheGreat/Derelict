@@ -15,6 +15,7 @@ module.exports = class Player{
     this.aim = new Line();
     this.bullet_wait_time = 200; //ms
     this.last_bullet_time = 0;
+    this.bullets = 50;
   }
 
   setSprite(human_sprite){
@@ -104,9 +105,10 @@ module.exports = class Player{
   }
 
   attack(){
-    if(Date.now()-this.last_bullet_time >= this.bullet_wait_time){
+    if((Date.now()-this.last_bullet_time >= this.bullet_wait_time) && (this.bullets > 0)){
       if(this.sprite)
         this.sprite.shoot();
+      this.bullets -= 1;
       var bullet = new Bullet();
       bullet.fireFrom(this);
       this.last_bullet_time = Date.now();

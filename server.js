@@ -54,7 +54,7 @@ app.post('/game-lobby', function(req, res, next) {
     HeartMonitor.beat(clients.get(req.body.username));
   }
   else {
-    // res.sendFile(__dirname + '/public/html/login-page.html');
+    //TODO: send error message
   }
 });
 
@@ -71,7 +71,7 @@ app.post('/join-game', function(req, res, next) {
   }
   else {
     Logger.log('Nonexistent client requested a game page: ' + username);
-    // TODO: send login page
+    res.sendFile(__dirname + '/public/html/login-page.html');
   }
 });
 
@@ -160,7 +160,7 @@ io.on('connection', function(connection) {
       game.movePlayer(username, pack);
     }catch(e){
       Logger.log("SERVER: Client \'" + username + "\' movement caused error." );
-      console.log(e);
+      Logger.log(e);
     }
   });
 

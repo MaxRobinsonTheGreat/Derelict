@@ -1,8 +1,8 @@
 'use strict'
 
 const game_core = require("../shared/game_core");
-const Logger = require("./logger")
-const Player = require("../shared/player")
+const Logger = require("./logger");
+const Player = require("../shared/player");
 
 module.exports = class Game{
   constructor(name, clients){
@@ -158,6 +158,7 @@ module.exports = class Game{
       // Logger.log("Bullet Rejected");
       return;
     }
+
     this.clients.forEach(function getLocations(cur_client, cur_name, map){
       if (cur_name != name){
         if (bullet.trajectory.checkBoxIntersect(cur_client.player)) {

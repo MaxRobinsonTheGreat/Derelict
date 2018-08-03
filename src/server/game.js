@@ -3,7 +3,6 @@
 const game_core = require("../shared/game_core");
 const Logger = require("./logger");
 const Player = require("../shared/player");
-const NoBulletsError = require("./error/NoBulletsError");
 
 module.exports = class Game{
   constructor(name, clients){

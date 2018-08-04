@@ -7,6 +7,7 @@ const Entity = require('./entity');
 const Bullet = require('../shared/bullet');
 
 const Renderer = require('./rendering/renderer');
+const RoomStructure = require('../shared/room_structure.js');
 
 var interval;
 
@@ -17,9 +18,10 @@ var others = [];
 var bullets = [];
 var self_index = -1;
 
+RoomStructure.init(2, 2);
 Renderer.setMainPlayer(main_player);
 Renderer.setOthers(others, -1);
-Renderer.setBullets(bullets)
+Renderer.setBullets(bullets);
 
 var last_update = 0;
 var delta_time = 0;
@@ -46,6 +48,7 @@ function main(){
 
   last_update = Date.now();
   interval = setInterval(function(){Update();Renderer.render();}, 1000/FPS);
+
 
   //make sure the default position is not colliding with anything
   socket.emit('init_client', main_player.location, sessionStorage.getItem("username"));

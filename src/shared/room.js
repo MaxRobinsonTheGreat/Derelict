@@ -8,6 +8,10 @@ module.exports = class Room{
     this.dimensions = {h:300, w:300}
   }
 
+  setSprite(room_sprite){
+    //this.sprite = sprite;
+  }
+
   checkBoundry(rect){
     if(rect.location.x + rect.dimensions.w > this.location.x + this.dimensions.w) {
       rect.location.x = this.dimensions.w+this.location.x-rect.dimensions.w;
@@ -28,5 +32,8 @@ module.exports = class Room{
     return false;
   }
 
+  draw(camera){
+    camera.drawCollision(this, "blue");
+  }
 
 }

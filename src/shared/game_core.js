@@ -34,7 +34,6 @@ module.exports = {
   },
 
   checkRoomCollision: function(player){
-    // let room = player.cur_room;
     return room.checkBoundry(player);
   },
 

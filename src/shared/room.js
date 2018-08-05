@@ -1,11 +1,19 @@
 'use strict'
 
+const DoorStructure = require('./doors_structure');
+
 module.exports = class Room{
 
-  constructor(type, x, y){
+  constructor(type, x, y, doors){
     this.type = type;
     this.location = {x, y};
-    this.dimensions = {h:300, w:300}
+    this.dimensions = {h:300, w:300};
+    this.setDoors(doors);
+  }
+
+  setDoors(doors){
+
+    this.doors = new DoorStructure(doors, this);
   }
 
   setSprite(room_sprite){
@@ -34,6 +42,11 @@ module.exports = class Room{
 
   draw(camera){
     camera.drawCollision(this, "blue");
-  }
 
+    var d = this.doors;
+    camera.drawBox(d.up.x, d.up.y, 10, 75, "red");
+    camera.drawBox(d.down.x, d.down.y, 10, 75, "red");
+    camera.drawBox(d.right.x, d.right.y, 75, 10, "red");
+    camera.drawBox(d.left.x, d.left.y, 75, 10, "red");
+  }
 }

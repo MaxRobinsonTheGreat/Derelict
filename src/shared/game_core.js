@@ -11,7 +11,7 @@
 
 const Room = require('./room');
 
-var room = new Room("empty", 0 , 0)
+var room = new Room("empty", 0 , 0, [true, true, true, true])
 module.exports = {
 
   getLocationObj: function(x, y) {

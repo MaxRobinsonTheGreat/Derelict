@@ -56,6 +56,10 @@ module.exports = class Camera{
       ctx.fillRect(box.location.x-this.location.x, box.location.y-this.location.y,
                    box.dimensions.w, box.dimensions.h);
   }
+  drawBox(x, y, h, w, color){
+      ctx.fillStyle = color;
+      ctx.fillRect(x-this.location.x, y-this.location.y, w, h);
+  }
 
   drawLineObj(line, color){
     this.drawLine(line.start.x, line.start.y, line.end.x, line.end.y, color)

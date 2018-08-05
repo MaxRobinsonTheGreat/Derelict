@@ -12,7 +12,7 @@ module.exports = {
     for(var r=0; r<r_total; r++){
       var row = [];
       for(var c=0; c<c_total; c++){
-        row.push(new Room("empty", r*310, c*310));
+        row.push(new Room("empty", r*310, c*310, [true, true, true, true]));
       }
       rooms.push(row);
     }

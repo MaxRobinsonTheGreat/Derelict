@@ -75,13 +75,14 @@ function updateDeltaTime() {
 function updatePlayer() {
   var old_loc = main_player.move(delta_time);
 
-  if(game_core.anyIntersect(main_player, others, self_index)){
-    main_player.location = old_loc;
+  var colliding_box = game_core.anyIntersect(main_player, others, self_index);
+  if(colliding_box){
+    game_core.smoothCollision(main_player, old_loc, colliding_box);
   }
 
-  //game_core.checkRoomCollision(main_player);
 
-  main_player.room.checkBoundry(main_player);
+
+  //main_player.room.checkBoundry(main_player);
 
   makeBullet(main_player.excecuteCommands());
 }
@@ -186,7 +187,6 @@ socket.on('correction', function(pack){
   if(pack.cc !== correction_counter) return;
 
   main_player.location = pack.corrected_location;
-  console.log("correction");
   correction_counter++;
 });
 

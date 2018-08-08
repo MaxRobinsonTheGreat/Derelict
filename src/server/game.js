@@ -35,15 +35,19 @@ module.exports = class Game{
     this.updateClients();
   }
 
-  collided(r, ignore_name){
+  collided(box, ignore_name){
+    var result = false;
     this.clients.forEach(function update(client, name, map){
       if(name != ignore_name){
-        if(game_core.checkIntersect(r, client.player)){
-          return true; //why aren't we returning the result?
+        if(game_core.checkIntersect(box, client.player)){
+          result = true;
+          return;
+          // This is *NOT* a return for the collided function, but for the
+          // return function defined at line 40
         }
       }
     });
-    return false;
+    return result;
   }
 
   updateClients(){
@@ -91,8 +95,9 @@ module.exports = class Game{
       client.player.location.x+=client.player.dimensions.w+10;
     }
 
+
     if(client.player.location.x !== location.x){
-      client.sendCorrection(client.player.location);
+      client.sendCorrection({corrected_location: client.player.location, cc: 0});
     }
 
     // put client info in map

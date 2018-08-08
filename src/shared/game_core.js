@@ -46,14 +46,25 @@ module.exports = {
             loc1.y+dim1.h > loc2.y && loc1.y < loc2.y+dim2.h)
   },
 
+  smoothCollision: function(player, old_location, colliding_box){
+    // if the old x value was intersecting but the location was still legal,
+    // then the change of the y value must have caused the full intersection
+    if(old_location.x+player.dimensions.w > colliding_box.location.x &&
+       old_location.x < colliding_box.location.x+colliding_box.dimensions.w){
+         player.location.y = old_location.y;
+    }
+    else{
+         player.location.x = old_location.x;
+    }
+  },
 
   anyIntersect: function(primary, list, to_ignore) {
       for(i in list){
         if(i!=to_ignore && this.checkIntersect(primary, list[i])){
-          return true;
+          return list[i];
         }
       }
-      return false;
+      return null;
   },
 
   connection: function() {

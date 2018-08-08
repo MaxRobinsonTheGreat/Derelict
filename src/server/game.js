@@ -135,10 +135,10 @@ module.exports = class Game{
 
     var wall_collision = game_core.checkRoomCollision({dimensions: client.player.dimensions, location: predicted_location})
 
-    if(x_dif > max_distance){
-      //this is triggering for some reason
-      console.log("LAME!");
-    }
+    // if(x_dif > max_distance){
+    //   //this is triggering for some reason
+    //   console.log("LAME!");
+    // }
     if(wall_collision || collision || x_dif > max_distance || y_dif > max_distance){
       client.player.last_update = old_time;
       client.player.correction_counter++;

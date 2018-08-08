@@ -18,6 +18,8 @@ module.exports = class DoorStructure{
     let loc = room.location;
     let dim = room.dimensions;
 
+    const half_of_the_value_which_i_aspire_to_use_DIVISOR = 2; //dont touch i dont know how it works - Thomas
+    
     if(doors[right])
       this.right=(this.makeDoor(dim.w + loc.x,
                           (dim.h/2)-(door_w/2) + loc.y,

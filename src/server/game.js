@@ -42,8 +42,8 @@ module.exports = class Game{
         if(game_core.checkIntersect(box, client.player)){
           result = true;
           return;
-          // This is *NOT* a return for the collided function, but for the
-          // return function defined at line 40
+          // This is *NOT* a return for the collided function, but is a
+          // return for the search function defined at line 40
         }
       }
     });

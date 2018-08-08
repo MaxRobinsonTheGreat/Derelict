@@ -9,9 +9,7 @@
     The server and client(s) have their own copies of this file and cannot communicate through the core.
 */
 
-const Room = require('./room');
-
-var room = new Room("empty", 0 , 0, [true, true, true, true])
+// var room = new Room("empty", 0 , 0, [true, true, true, true])
 module.exports = {
 
   getLocationObj: function(x, y) {
@@ -34,7 +32,8 @@ module.exports = {
   },
 
   checkRoomCollision: function(player){
-    return room.checkBoundry(player);
+    // return room.checkBoundry(player);
+    return false;
   },
 
   checkIntersect: function(obj1, obj2){

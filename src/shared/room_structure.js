@@ -33,5 +33,9 @@ module.exports = {
         rooms[r][c].draw(camera);
       }
     }
+  },
+
+  getRoomAt(r, c){
+    return rooms[r][c];
   }
 }

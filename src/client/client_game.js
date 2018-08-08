@@ -45,6 +45,7 @@ function intializeControls() {
 
 function main(){
   intializeControls();
+  main_player.room = RoomStructure.getRoomAt(0, 0);
 
   last_update = Date.now();
   interval = setInterval(function(){Update();Renderer.render();}, 1000/FPS);
@@ -78,7 +79,9 @@ function updatePlayer() {
     main_player.location = old_loc;
   }
 
-  game_core.checkRoomCollision(main_player);
+  //game_core.checkRoomCollision(main_player);
+
+  main_player.room.checkBoundry(main_player);
 
   makeBullet(main_player.excecuteCommands());
 }
@@ -183,6 +186,7 @@ socket.on('correction', function(pack){
   if(pack.cc !== correction_counter) return;
 
   main_player.location = pack.corrected_location;
+  console.log("correction");
   correction_counter++;
 });
 

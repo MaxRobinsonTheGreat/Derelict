@@ -41,12 +41,11 @@ module.exports = class DoorStructure{
 
   makeDoor(x, y, facing_up){
     var door = {};
-    door.x = x;
-    door.y = y;
+    door.location = {x, y};
     if(facing_up)
-      this.dimensions = {w:door_w, h:door_h};
+      door.dimensions = {w:door_w, h:door_h};
     else
-      this.dimensions = {w:door_h, h:door_w}
+      door.dimensions = {w:door_h, h:door_w}
     return door;
   }
 

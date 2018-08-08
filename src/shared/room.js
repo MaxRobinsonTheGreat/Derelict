@@ -1,6 +1,7 @@
 'use strict'
 
 const DoorStructure = require('./doors_structure');
+const game_core = require('./game_core');
 
 module.exports = class Room{
 
@@ -21,32 +22,38 @@ module.exports = class Room{
   }
 
   checkBoundry(rect){
-    if(rect.location.x + rect.dimensions.w > this.location.x + this.dimensions.w) {
-      rect.location.x = this.dimensions.w+this.location.x-rect.dimensions.w;
-      return true;
+    var result = false;
+    if(rect.location.x + rect.dimensions.w > this.location.x + this.dimensions.w){
+      if(this.doors.right && game_core.checkIntersect(this.doors.right, rect)){
+          console.log("RIGHT!");
+      }
+      else{
+        rect.location.x = this.dimensions.w+this.location.x-rect.dimensions.w;
+      }
+      result = true;
     }
     if(rect.location.y + rect.dimensions.h > this.location.y + this.dimensions.h) {
       rect.location.y = this.dimensions.h+this.location.y-rect.dimensions.h;
-      return true;
+      result = true;
     }
-    if(rect.location.x < 0) {
-      rect.location.x = 0;
-      return true;
+    if(rect.location.x < this.location.x) {
+      rect.location.x = this.location.x;
+      result = true;
     }
-    if(rect.location.y < 0) {
-      rect.location.y = 0;
-      return true;
+    if(rect.location.y < this.location.y) {
+      rect.location.y = this.location.y;
+      result = true;
     }
-    return false;
+    return result;
   }
 
   draw(camera){
     camera.drawCollision(this, "blue");
 
     var d = this.doors;
-    camera.drawBox(d.up.x, d.up.y, 10, 75, "red");
-    camera.drawBox(d.down.x, d.down.y, 10, 75, "red");
-    camera.drawBox(d.right.x, d.right.y, 75, 10, "red");
-    camera.drawBox(d.left.x, d.left.y, 75, 10, "red");
+    camera.drawCollision(this.doors.up, "blue");
+    camera.drawCollision(this.doors.down, "blue");
+    camera.drawCollision(this.doors.right, "blue");
+    camera.drawCollision(this.doors.left, "blue");
   }
 }

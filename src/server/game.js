@@ -36,16 +36,14 @@ module.exports = class Game{
   }
 
   collided(r, ignore_name){
-    var result = false;
     this.clients.forEach(function update(client, name, map){
       if(name != ignore_name){
         if(game_core.checkIntersect(r, client.player)){
-          result = true;
-          return; //why aren't we returning the result?
+          return true; //why aren't we returning the result?
         }
       }
     });
-    return result;
+    return false;
   }
 
   updateClients(){
@@ -115,7 +113,7 @@ module.exports = class Game{
 
     let predicted_location = pack.loc;
 
-    const forgiveness = 16;//should be 10 //this give the clients a *little* bit of leeway in their predictions
+    const forgiveness = 16;//this give the clients a *little* bit of leeway in their predictions
     let d_time = Date.now()-client.player.last_update+forgiveness;
     let old_time = client.player.last_update;
     client.player.last_update = Date.now();
@@ -132,6 +130,10 @@ module.exports = class Game{
 
     var wall_collision = game_core.checkRoomCollision({dimensions: client.player.dimensions, location: predicted_location})
 
+    if(x_dif > max_distance){
+      //this is triggering for some reason
+      console.log("LAME!");
+    }
     if(wall_collision || collision || x_dif > max_distance || y_dif > max_distance){
       client.player.last_update = old_time;
       client.player.correction_counter++;

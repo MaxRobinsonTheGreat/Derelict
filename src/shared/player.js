@@ -9,11 +9,11 @@ module.exports = class Player{
     this.center = this.getCenter();
     this.gun_offset = {x:40, y:8}; //when facing right, these values are the relative transform away from the center to the gunpoint
     this.commands = {left: false, right: false, up: false, down: false, left_click: false};
-    this.speed = 100; //pixels per second
+    this.speed = 150; //pixels per second
     this.last_update = Date.now();
     this.orientation = 0; //degrees
     this.aim = new Line();
-    this.bullet_wait_time = 200; //ms
+    this.bullet_wait_time = 150; //ms
     this.last_bullet_time = 0;
   }
 

@@ -45,7 +45,7 @@ function intializeControls() {
 
 function main(){
   intializeControls();
-  main_player.room = RoomStructure.getRoomAt(0, 0);
+  main_player.room_location = {r:0, c:0};
 
   last_update = Date.now();
   interval = setInterval(function(){Update();Renderer.render();}, 1000/FPS);
@@ -61,6 +61,8 @@ function Update(){
 
   updatePlayer();
 
+  RoomStructure.update(main_player);
+
   updateOthers();
 
   //if(main_player.moving)
@@ -74,15 +76,12 @@ function updateDeltaTime() {
 
 function updatePlayer() {
   var old_loc = main_player.move(delta_time);
+  main_player.old_location = old_loc;
 
   var colliding_box = game_core.anyIntersect(main_player, others, self_index);
   if(colliding_box){
     game_core.smoothCollision(main_player, old_loc, colliding_box);
   }
-
-
-
-  //main_player.room.checkBoundry(main_player);
 
   makeBullet(main_player.excecuteCommands());
 }

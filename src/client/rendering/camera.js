@@ -49,12 +49,16 @@ module.exports = class Camera{
   drawSpriteStatic(sprite, x, y, theta=0){
     sprite.drawStaticDirectional(x-this.location.x, y-this.location.y, 0, 0, theta);
   }
-  
+
 
   drawCollision(box, color){
       ctx.fillStyle = color;
       ctx.fillRect(box.location.x-this.location.x, box.location.y-this.location.y,
                    box.dimensions.w, box.dimensions.h);
+  }
+  drawBox(x, y, h, w, color){
+      ctx.fillStyle = color;
+      ctx.fillRect(x-this.location.x, y-this.location.y, w, h);
   }
 
   drawLineObj(line, color){

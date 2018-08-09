@@ -35,13 +35,15 @@ module.exports = class Game{
     this.updateClients();
   }
 
-  collided(r, ignore_name){
+  collided(box, ignore_name){
     var result = false;
     this.clients.forEach(function update(client, name, map){
       if(name != ignore_name){
-        if(game_core.checkIntersect(r, client.player)){
+        if(game_core.checkIntersect(box, client.player)){
           result = true;
-          return; //why aren't we returning the result?
+          return;
+          // This is *NOT* a return for the collided function, but is a
+          // return for the search function defined at line 40
         }
       }
     });
@@ -93,8 +95,13 @@ module.exports = class Game{
       client.player.location.x+=client.player.dimensions.w+10;
     }
 
+    //did the client have to be moved over?
     if(client.player.location.x !== location.x){
-      client.sendCorrection(client.player.location);
+      client.sendCorrection({
+        corrected_location: client.player.location,
+        cc: 0
+      });
+      client.player.correction_counter++;
     }
 
     // put client info in map
@@ -115,7 +122,7 @@ module.exports = class Game{
 
     let predicted_location = pack.loc;
 
-    const forgiveness = 16;//should be 10 //this give the clients a *little* bit of leeway in their predictions
+    const forgiveness = 16;//this give the clients a *little* bit of leeway in their predictions
     let d_time = Date.now()-client.player.last_update+forgiveness;
     let old_time = client.player.last_update;
     client.player.last_update = Date.now();
@@ -130,10 +137,21 @@ module.exports = class Game{
 
     var collision = this.collided({dimensions: client.player.dimensions, location: predicted_location}, name);
 
-    if(collision || x_dif > max_distance || y_dif > max_distance){
+    var wall_collision = game_core.checkRoomCollision({dimensions: client.player.dimensions, location: predicted_location})
+
+    // if(x_dif > max_distance){
+    //   //this is triggering for some reason
+    //   console.log("LAME!");
+    // }
+    if(wall_collision || collision || x_dif > max_distance || y_dif > max_distance){
       client.player.last_update = old_time;
       client.player.correction_counter++;
-      client.sendCorrection({corrected_location: server_location, cc: pack.cc});
+      client.sendCorrection(
+        {
+          corrected_location: server_location,
+          cc: pack.cc
+        }
+       );
     }
     else{
       client.player.location = predicted_location;

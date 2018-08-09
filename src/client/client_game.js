@@ -7,6 +7,7 @@ const Entity = require('./entity');
 const Bullet = require('../shared/bullet');
 
 const Renderer = require('./rendering/renderer');
+const RoomStructure = require('../shared/room_structure.js');
 
 var interval;
 
@@ -17,9 +18,10 @@ var others = [];
 var bullets = [];
 var self_index = -1;
 
+RoomStructure.init(2, 2);
 Renderer.setMainPlayer(main_player);
 Renderer.setOthers(others, -1);
-Renderer.setBullets(bullets)
+Renderer.setBullets(bullets);
 
 var last_update = 0;
 var delta_time = 0;
@@ -43,9 +45,11 @@ function intializeControls() {
 
 function main(){
   intializeControls();
+  main_player.room_location = {r:0, c:0};
 
   last_update = Date.now();
   interval = setInterval(function(){Update();Renderer.render();}, 1000/FPS);
+
 
   //make sure the default position is not colliding with anything
   socket.emit('init_client', main_player.location, sessionStorage.getItem("username"));
@@ -56,6 +60,8 @@ function Update(){
   updateDeltaTime();
 
   updatePlayer();
+
+  RoomStructure.update(main_player);
 
   updateOthers();
 
@@ -70,13 +76,12 @@ function updateDeltaTime() {
 
 function updatePlayer() {
   var old_loc = main_player.move(delta_time);
+  main_player.old_location = old_loc;
 
-  if(game_core.anyIntersect(main_player, others, self_index)){
-    main_player.location = old_loc;
+  var colliding_box = game_core.anyIntersect(main_player, others, self_index);
+  if(colliding_box){
+    game_core.smoothCollision(main_player, old_loc, colliding_box);
   }
-
-  var boundry_result = game_core.checkBoundry(main_player.location, main_player.dimensions);
-  main_player.location = boundry_result.loc;
 
   makeBullet(main_player.excecuteCommands());
 }
@@ -179,8 +184,7 @@ socket.on('init_entities', function(state) {
     - Immediately updates the player location
 */
 socket.on('correction', function(pack){
-  if(pack.cc !== correction_counter) return;
-
+  if(pack.cc !== correction_counter) {return;}
   main_player.location = pack.corrected_location;
   correction_counter++;
 });

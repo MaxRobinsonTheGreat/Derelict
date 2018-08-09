@@ -4,6 +4,7 @@ const Sprite = require('./sprite');
 const Camera = require('./camera');
 const ImageContainer = require('./image_container').getImageContainer();
 const AudioContainer = require('../sound_effects/audio_container').loadAudioFiles();
+const RoomStructure = require('../../shared/room_structure');
 const HumanSprite = require('./human_sprite');
 
 var canvas = document.getElementById('canvas');
@@ -56,12 +57,13 @@ var renderer = module.exports = {
 
   render: function(){
     // console.log(window.innerHeight);
-    // changeCanvasToFull();
+    // changeCanvasToFull()
+
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     this.camera.updateLocation();
-    this.camera.drawCollision(platform, "blue");
+    RoomStructure.draw(this.camera);
 
     let mouse_loc = this.camera.getMouseLocation();
 
@@ -92,7 +94,3 @@ var renderer = module.exports = {
     this.main_player.draw(this.camera);
   }
 }
-
-var platform = {};
-platform.location = {x:0, y:0};
-platform.dimensions = {h:400,w:600};

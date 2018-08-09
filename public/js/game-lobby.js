@@ -41,7 +41,7 @@ function getGameList(){
       let game_name = this.textContent;
 
       // console.log(username);
-      goFullScreen();
+      // goFullScreen();
       $.post({url: "/join-game", data: {username, game_name}, success: function(result) {
         document.open();
         document.write(result);

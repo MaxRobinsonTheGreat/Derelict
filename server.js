@@ -136,7 +136,7 @@ io.on('connection', function(connection) {
   */
   client.on('init_client', function(new_player_loc, init_username){
     game.addClient(client, username, new_player_loc);
-
+    //TODO: defend against multiple 'init_client' emits
     Logger.log('Client ' + username + ' opened a game socket.');
 
     if(game.clients.size <= 1 && !game.isRunning()) {
@@ -159,8 +159,8 @@ io.on('connection', function(connection) {
     try{
       game.movePlayer(username, pack);
     }catch(e){
-      Logger.log("SERVER: Client \'" + username + "\' movement caused error." );
-      Logger.log(e);
+      Logger.log("SERVER: Client \'" + username + "\' movement caused error:" );
+      console.log(e);
     }
   });
 
@@ -169,7 +169,7 @@ io.on('connection', function(connection) {
     try{
       game.attackFrom(username);
     }catch(e){
-      Logger.log("SERVER: Client \'" + username + "\' attack caused error." );
+      Logger.log("SERVER: Client \'" + username + "\' attack caused error:" );
       console.log(e);
     }
   });

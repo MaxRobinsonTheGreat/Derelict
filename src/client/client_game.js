@@ -88,6 +88,7 @@ function updatePlayer() {
 
 function makeBullet(bullet){
   if(bullet){
+    document.getElementById("bullet-counter").value = main_player.bullets;
     bullet.startFade();
     bullets.push(bullet);
     socket.emit('attack');
@@ -249,6 +250,7 @@ addEventListener("mousedown", function() {
   let new_bullet = main_player.attack();
   makeBullet(new_bullet);
 });
+
 addEventListener("mouseup", function() {
   main_player.commands.left_click = false;
 });

@@ -183,8 +183,7 @@ socket.on('init_entities', function(state) {
     - Immediately updates the player location
 */
 socket.on('correction', function(pack){
-  if(pack.cc !== correction_counter) return;
-
+  if(pack.cc !== correction_counter) {return;}
   main_player.location = pack.corrected_location;
   correction_counter++;
 });

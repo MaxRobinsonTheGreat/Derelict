@@ -95,9 +95,13 @@ module.exports = class Game{
       client.player.location.x+=client.player.dimensions.w+10;
     }
 
-
+    //did the client have to be moved over?
     if(client.player.location.x !== location.x){
-      client.sendCorrection({corrected_location: client.player.location, cc: 0});
+      client.sendCorrection({
+        corrected_location: client.player.location,
+        cc: 0
+      });
+      client.player.correction_counter++;
     }
 
     // put client info in map
@@ -142,7 +146,12 @@ module.exports = class Game{
     if(wall_collision || collision || x_dif > max_distance || y_dif > max_distance){
       client.player.last_update = old_time;
       client.player.correction_counter++;
-      client.sendCorrection({corrected_location: server_location, cc: pack.cc});
+      client.sendCorrection(
+        {
+          corrected_location: server_location,
+          cc: pack.cc
+        }
+       );
     }
     else{
       client.player.location = predicted_location;

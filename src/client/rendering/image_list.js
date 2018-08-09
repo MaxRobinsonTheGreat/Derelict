@@ -15,5 +15,13 @@ module.exports = [
 		rows: 1,
 		cols: 8,
 		fps: 12
+	},
+	{
+		title: "Floor",
+		src: "Floor.png",
+		type: "sprite",
+		rows: 1,
+		cols: 1,
+		fps: 1
 	}
 ]

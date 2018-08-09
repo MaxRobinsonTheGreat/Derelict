@@ -176,7 +176,7 @@ module.exports = class WallStructure{
 
   draw(camera){
     for (var o of this.obstacles){
-      camera.drawCollision(o, "red");
+      camera.drawCollision(o, "gray");
     }
   }
 }

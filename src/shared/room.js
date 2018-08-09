@@ -1,6 +1,7 @@
 'use strict'
 
 const WallStructure = require('./wall_structure');
+const RoomSprite = require('../client/rendering/room_sprite');
 const game_core = require('./game_core');
 
 module.exports = class Room{
@@ -10,6 +11,9 @@ module.exports = class Room{
     this.location = {x, y};
     this.dimensions = {h:300, w:300};
     this.makeWalls(door_list);
+
+    //THIS MUST BE REMOVED TO MIGRATE TO SERVER
+    this.sprite = new RoomSprite(this);
   }
 
   makeWalls(door_list){
@@ -35,7 +39,8 @@ module.exports = class Room{
   }
 
   draw(camera){
-    camera.drawCollision(this, "blue");
+    // camera.drawCollision(this, "blue");
+    this.sprite.draw(camera);
     this.walls.draw(camera);
   }
 }

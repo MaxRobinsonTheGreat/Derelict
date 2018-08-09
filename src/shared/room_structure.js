@@ -51,7 +51,7 @@ module.exports = {
   changePlayerRoom(player, c, r){
     var room = rooms[c];
 
-    //ensure that the colomn we are check exists
+    //ensure that the colomn we are checking exists
     if(rooms[c]){
       var room = rooms[c][r+1];
       if(room && room.contains(player)){
@@ -64,7 +64,7 @@ module.exports = {
         return room;
       }
     }
-    //ensure that the colomn we are check exists
+    //ensure that the colomn we are checking exists
     if(rooms[c+1]){
       room = rooms[c+1][r];
       if(room && room.contains(player)){
@@ -72,7 +72,7 @@ module.exports = {
         return room;
       }
     }
-    //ensure that the colomn we are check exists
+    //ensure that the colomn we are checking exists
     if(rooms[c-1]){
       room = rooms[c-1][r];
       if(room && room.contains(player)){

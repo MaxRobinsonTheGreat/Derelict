@@ -42,8 +42,8 @@ module.exports = class Line{
 		let x1 = this.start.x;
 		let y1 = this.start.y;
 		let x2 = this.end.x;
-		let y2 = this.end.x;
-    return Math.sqrt(Math.abs((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)));
+		let y2 = this.end.y;
+    return Math.sqrt( Math.abs((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)) );
   }
 
 	//uses Cohen–Sutherland_algorithm

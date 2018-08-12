@@ -97,9 +97,7 @@ function makeBullet(bullet){
 }
 
 function computeBulletCollision(bullet){
-  if(others[1]){
-    bullet.collide(others[1]);
-  }
+  var hit = bullet.findNearestCollision(others, main_player);
 }
 
 function updateOthers(){

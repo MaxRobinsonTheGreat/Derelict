@@ -54,7 +54,7 @@ app.post('/game-lobby', function(req, res, next) {
     HeartMonitor.beat(clients.get(req.body.username));
   }
   else {
-    // res.sendFile(__dirname + '/public/html/login-page.html');
+    //TODO: send error message
   }
 });
 

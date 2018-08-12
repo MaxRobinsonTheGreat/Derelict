@@ -88,10 +88,17 @@ function updatePlayer() {
 
 function makeBullet(bullet){
   if(bullet){
+    computeBulletCollision(bullet);
     document.getElementById("bullet-counter").value = main_player.bullets;
     bullet.startFade();
     bullets.push(bullet);
     socket.emit('attack');
+  }
+}
+
+function computeBulletCollision(bullet){
+  if(others[1]){
+    bullet.collide(others[1]);
   }
 }
 

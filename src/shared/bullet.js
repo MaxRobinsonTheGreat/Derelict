@@ -21,6 +21,17 @@ module.exports = class Bullet{
       this.orientation = theta;
     }
 
+    collide(box){
+      if(this.trajectory.checkBoxIntersect(box)){
+        var point = this.trajectory.boxIntersectAt(box)
+        if(!point){
+          console.log("a bullet hit but had not intersection point... bug");
+          return;
+        }
+        this.trajectory.setEnd(point.x, point.y);
+      }
+    }
+
 
     //This section is called on only client (startFade, fade, isFinished)
 

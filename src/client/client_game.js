@@ -88,9 +88,17 @@ function updatePlayer() {
 
 function makeBullet(bullet){
   if(bullet){
+    // RoomStructure.checkBullet
+    computeBulletCollision(bullet);
     bullet.startFade();
     bullets.push(bullet);
     socket.emit('attack');
+  }
+}
+
+function computeBulletCollision(bullet){
+  if(others[1]){
+    bullet.collide(others[1]);
   }
 }
 

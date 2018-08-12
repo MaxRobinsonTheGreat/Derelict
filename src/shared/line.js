@@ -113,14 +113,12 @@ module.exports = class Line{
 
 		// if the box is above the line, look up
 		if(this.start.y > box.location.y + box.dimensions.h){
-			console.log("up");
 			point = this.checkUp(box);
 			if(!point)
 				point = this.checkSides(box);
 		}
 		else{
 			point = this.checkDown(box);
-			console.log("down");
 			if(!point)
 				point = this.checkSides(box);
 		}
@@ -131,11 +129,9 @@ module.exports = class Line{
 		var point;
 		if(this.start.x < box.location.x){
 			point = this.checkRight(box);
-			console.log("right");
 		}
 		else{
 			point = this.checkLeft(box);
-			console.log("left");
 		}
 		return point;
 	}

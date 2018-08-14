@@ -12,6 +12,7 @@ module.exports = class Game{
     this.last_update = Date.now();
     this.last_client_update = Date.now();
     this.running = false;
+    this.players = [];
   }
 
   start(){
@@ -88,6 +89,7 @@ module.exports = class Game{
 
   addClient(client, client_name, location){
     client.player = new Player();
+    client.player.name = client.name;
     client.player.correction_counter = 0;
 
     // keep incrementing x position until no longer colliding
@@ -106,6 +108,8 @@ module.exports = class Game{
 
     // put client info in map
     this.clients.set(client_name, client);
+    client.player.index = this.players.length;
+    this.players.push(client.player);
     this.initEntities();
   }
 
@@ -177,33 +181,41 @@ module.exports = class Game{
       return;
     }
 
-    this.clients.forEach(function getLocations(cur_client, cur_name, map){
-      if (cur_name != name){
-        if (bullet.trajectory.checkBoxIntersect(cur_client.player)) {
-          const BULLET_DAMAGE = 10;
+    // console.log(this.players);
+    var hit_player = bullet.findNearestCollision(this.players, player);
+    if (hit_player) {
+      // console.log(hit_player.name)
+      const BULLET_DAMAGE = 10;
 
-          let current_health = cur_client.player.health;
-          cur_client.player.health -= BULLET_DAMAGE;
-          if (cur_client.player.health <= 0) {
-            if (current_health <= 0) {
-              // Logger.log("Player was already dead...");
-            }
-            else {
-              Logger.log(cur_name + " died!!!");
-              cur_client.kick();
-            }
-          }
-          else {
-            cur_client.reduceHealth(cur_client.player.health);
-          }
+      let current_health = hit_player.health;
+      hit_player.health -= BULLET_DAMAGE;
+      let hit_client = this.clients.get(hit_player.name);
+      if (hit_player.health <= 0) {
+        if (current_health <= 0) {
+          // Logger.log("Player was already dead...");
         }
+        else {
+          Logger.log(hit_player.name + " died.");
+          hit_client.kick();
+          this.players.splice(hit_player.index, 1);
+        }
+      }
+      else {
+        hit_client.reduceHealth(hit_player.health);
+      }
+    }
 
-        cur_client.sendBullet({x:bullet.trajectory.start.x,
-                               y:bullet.trajectory.start.y,
-                               ori:bullet.orientation,
-                               player: player_index
-                              });
-        }
-    });
+    // this.clients.forEach(function getLocations(cur_client, name, map){
+    for(var cur_client of this.clients){
+      cur_client = cur_client[1];
+      if(cur_client === client) continue;
+      cur_client.sendBullet({x1:bullet.trajectory.start.x,
+                             y1:bullet.trajectory.start.y,
+                             x2:bullet.trajectory.end.x,
+                             y2:bullet.trajectory.end.y,
+                             player: player_index
+                            });
+    // });
+    }
   }
 }

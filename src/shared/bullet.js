@@ -21,13 +21,18 @@ module.exports = class Bullet{
       this.orientation = theta;
     }
 
+    set(x1, y1, x2, y2){
+      this.trajectory = new Line();
+      this.trajectory.setPoints(x1 ,y1, x2, y2);
+    }
+
     //given a list, find the closest collision point
     findNearestCollision(boxes, to_ignore){
       var closest_box = null;
       var lowest_mag = this.trajectory.getMagnitude();
       for(var b of boxes){
-        if(b == to_ignore){ break;}
-        //use fast/efficient method before the most costly algorithm
+        if(b == to_ignore){ continue;}
+        //use fast/efficient method before the most costly point-finding algorithm
         if(this.trajectory.checkBoxIntersect(b)){
           var collision_point = this.trajectory.boxIntersectAt(b);
           if(!collision_point){

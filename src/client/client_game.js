@@ -202,7 +202,7 @@ socket.on('reduce_health', function(new_health) {
 
 socket.on('bullet', function(bullet_info){
   var bullet = new Bullet();
-  bullet.fire(bullet_info.x, bullet_info.y, bullet_info.ori);
+  bullet.set(bullet_info.x1, bullet_info.y1, bullet_info.x2, bullet_info.y2);
   bullet.startFade();
   bullets.push(bullet);
   others[bullet_info.player].sprite.shoot();

@@ -19,7 +19,10 @@ module.exports = {
         if(r === 0)              doors[1] = false;
         else if(r == r_total-1)  doors[3] = false;
 
-        column.push(new Room("empty", c*300, r*300, doors));
+        var room = new Room("empty", c*300, r*300, doors);
+        room.row = r;
+        room.column = c;
+        column.push(room);
       }
       rooms.push(column);
     }
@@ -80,6 +83,52 @@ module.exports = {
         return room;
       }
     }
+  },
+
+  computeBulletCollision(bullet, c, r, previous_room){
+    if(c<0 || r<0 || c>=this.c_total || r>=this.r_total)
+      return null;
+
+    var room = rooms[c][r];
+
+    var hit_wall = bullet.findNearestCollision(room.walls.obstacles, null);
+    if(hit_wall)
+      return hit_wall;
+
+
+    var next_room;
+    if(rooms[c+1]){
+      next_room = rooms[c+1][r];
+      if(next_room && bullet.trajectory.checkBoxIntersect(next_room) && next_room != previous_room){
+        hit_wall = this.computeBulletCollision(bullet, c+1, r, room);
+        if(hit_wall)
+          return hit_wall;
+      }
+    }
+
+    if(rooms[c-1]){
+      next_room = rooms[c-1][r];
+      if(next_room && bullet.trajectory.checkBoxIntersect(next_room) && next_room != previous_room){
+        hit_wall = this.computeBulletCollision(bullet, c-1, r, room);
+        if(hit_wall)
+          return hit_wall;
+      }
+    }
+    next_room = rooms[c][r+1];
+    if(next_room && bullet.trajectory.checkBoxIntersect(next_room) && next_room != previous_room){
+      hit_wall = this.computeBulletCollision(bullet, c, r+1, room);
+      if(hit_wall)
+        return hit_wall;
+    }
+    next_room = rooms[c][r-1];
+    if(next_room && bullet.trajectory.checkBoxIntersect(next_room) && next_room != previous_room){
+      hit_wall = this.computeBulletCollision(bullet, c, r-1, room);
+      if(hit_wall){
+        return hit_wall;
+        console.log(hit_wall)
+      }
+    }
+    return null;
   },
 
   draw(camera){

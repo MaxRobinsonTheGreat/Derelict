@@ -39,11 +39,15 @@ module.exports = class Bullet{
             console.log("A collision was detected but no intersection point \
             was found. There must be a bug.");
           }
+          var old_end_point = this.trajectory.end;
           this.trajectory.end = collision_point;
           var new_mag = this.trajectory.getMagnitude();
           if(new_mag < lowest_mag){
             lowest_mag = new_mag;
             closest_box = b;
+          }
+          else{
+            this.trajectory.end = old_end_point;
           }
         }
       }

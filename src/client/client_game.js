@@ -97,7 +97,8 @@ function makeBullet(bullet){
 }
 
 function computeBulletCollision(bullet){
-  var hit = bullet.findNearestCollision(others, main_player);
+  var hit_player = bullet.findNearestCollision(others, main_player);
+  var hit_room = RoomStructure.computeBulletCollision(bullet, main_player.room_location.c, main_player.room_location.r);
 }
 
 function updateOthers(){

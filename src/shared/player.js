@@ -100,8 +100,8 @@ module.exports = class Player{
       let orientation = Math.atan(opposite/adjacent) * rad2deg;
       this.orientation = orientation + 180;
     }
-    let gun_point = this.getGunpoint();
-    this.aim.makeByOrientation(gun_point.x, gun_point.y, this.orientation, 100);
+    // let gun_point = this.getGunpoint();
+    // this.aim.makeByOrientation(gun_point.x, gun_point.y, this.orientation, 100);
   }
 
   attack(){

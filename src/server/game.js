@@ -3,6 +3,8 @@
 const game_core = require("../shared/game_core");
 const Logger = require("./logger");
 const Player = require("../shared/player");
+const RoomStructure = require('../shared/room_structure.js');
+RoomStructure.init(2, 2);
 
 module.exports = class Game{
   constructor(name, clients){
@@ -91,6 +93,7 @@ module.exports = class Game{
     client.player = new Player();
     client.player.name = client.name;
     client.player.correction_counter = 0;
+    client.player.room_location = {r:0, c:0};
 
     // keep incrementing x position until no longer colliding
     while(this.collided(client.player, client_name)){
@@ -143,6 +146,8 @@ module.exports = class Game{
 
     var wall_collision = game_core.checkRoomCollision({dimensions: client.player.dimensions, location: predicted_location})
 
+    RoomStructure.update(client.player);
+
     // if(x_dif > max_distance){
     //   //this is triggering for some reason
     //   console.log("LAME!");
@@ -182,9 +187,9 @@ module.exports = class Game{
     }
 
     // console.log(this.players);
+    var hit_wall = RoomStructure.computeBulletCollision(bullet, player.room_location.c, player.room_location.r, null);
     var hit_player = bullet.findNearestCollision(this.players, player);
-    if (hit_player) {
-      // console.log(hit_player.name)
+    if (hit_player && hit_player.name != player.name) {
       const BULLET_DAMAGE = 10;
 
       let current_health = hit_player.health;

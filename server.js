@@ -6,6 +6,7 @@ const Logger = require("./src/server/logger");
 const Game = require("./src/server/game");
 const Client = require("./src/server/client");
 const HeartMonitor = require("./src/server/heart_monitor");
+const PORT = process.env.PORT || 8080;
 
 // Use express to open a web server
 const express = require('express');
@@ -102,7 +103,7 @@ function destroyClient(name){
 }
 
 // -- ClIENT LISTENERS --
-server.listen(8080, '0.0.0.0'); // begin listening
+server.listen(PORT, '0.0.0.0'); // begin listening
 Logger.log("SERVER: listening...");
 io.on('connection', function(connection) {
 

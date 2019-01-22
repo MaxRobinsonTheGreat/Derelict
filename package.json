@@ -7,7 +7,8 @@
     "build-dev": "webpack --mode=development",
     "build-production": "webpack --mode=production",
     "test": "echo 'Thomas is awesome!!!'",
-    "start": "node server.js &>> ../Log/DerelictLog1.txt"
+    "start": "node server.js &>> ../Log/DerelictLog1.txt",
+    "heroku-postbuild": "webpack --mode=development"
   },
   "author": "",
   "license": "ISC",
